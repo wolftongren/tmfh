@@ -14,7 +14,6 @@
 
         $(document).ready(function () {
 
-
             chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
@@ -25,13 +24,37 @@
                 title: {
                     text: 'Stock Market Status Monitor'
                 },
-                series: [{
-                    name: 'shangzhang, xiadie, pingpan',
-                    data: data,
-                    type: 'column',
-                }]
-            });
+                xAxis: {
+                    categories: ['shangzhang', 'xiadie', 'pingpan'],
+                    labels: {
+                        rotation: -45,
+                        align: 'right'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'No. of stocks'
+                    }
+                },
 
+                plotOptions: {
+
+                    column: {
+                        colorByPoint : true,
+                        colors:['red', 'green', 'grey'],
+                        dataLabels: {
+                            enabled:true
+                        }
+                    }
+                },
+
+                series: [{
+                    name: 'zhangdie distribution',
+                    data: data,
+                    type: 'column'
+                }]
+
+            });
 
         });
 
