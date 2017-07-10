@@ -2,8 +2,10 @@ import json
 import pymysql
 import datetime
 from flask import Flask, request, render_template
+from flask.ext.bootstrap import Bootstrap
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
 c = conn.cursor()
@@ -35,6 +37,10 @@ def getnew():
         top = [0,0,0]
     print top
     return json.dumps(top)
+
+@app.route('/bs')
+def index():
+    return render_template('bs.html', data=json.dumps([1,2,3]))
 
 
 
