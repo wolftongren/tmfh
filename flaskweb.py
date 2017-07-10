@@ -13,9 +13,12 @@ c = conn.cursor()
 def hello():
     d = datetime.datetime.now().date()
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
-    v = c.fetchone();
-    conn.commit();
-    ones = [v[0], v[1], v[2]];
+    v = c.fetchone()
+    conn.commit()
+    if (v != None):
+        ones = [v[0], v[1], v[2]]
+    else:
+        ones = [0,0,0]
     print ones
     return render_template('mon.html', data=json.dumps(ones))
 
@@ -25,10 +28,14 @@ def getnew():
     d = datetime.datetime.now().date()
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
     v = c.fetchone()
-    conn.commit();
-    top = [v[0], v[1], v[2]]
+    conn.commit()
+    if (v!=None):
+        top = [v[0], v[1], v[2]]
+    else:
+        top = [0,0,0]
     print top
     return json.dumps(top)
+
 
 
 app.run(host='0.0.0.0', port=8888, debug=True)
