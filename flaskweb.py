@@ -10,7 +10,6 @@ bootstrap = Bootstrap(app)
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
 c = conn.cursor()
 
-
 @app.route('/')
 def hello():
     d = datetime.datetime.now().date()
@@ -40,8 +39,6 @@ def getnew():
 
 @app.route('/bs')
 def index():
-    return render_template('bs.html', data=json.dumps([1,2,3]))
-
-
+    return render_template('bs.html', data=json.dumps([1,1,1]))
 
 app.run(host='0.0.0.0', port=8888, debug=True)
