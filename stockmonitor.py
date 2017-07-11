@@ -25,7 +25,7 @@ while True:
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().time()
 
-    if (t < t930 and t < t1130) or (t > t1300 and t > t1500):
+    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
         for i in range(0, len(dfstocks) / 500 + 1):
