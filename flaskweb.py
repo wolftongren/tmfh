@@ -6,15 +6,15 @@ from flask import Flask, request, render_template
 app = Flask(__name__)
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
-c = conn.cursor()
-
 
 @app.route('/')
 def hello():
     d = datetime.datetime.now().date()
+    c = conn.cursor()
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
+    c.close();
     if (v != None):
         ones = [v[0], v[1], v[2]]
     else:
@@ -23,12 +23,15 @@ def hello():
     return render_template('main.html', data=json.dumps(ones))
 
 
+
 @app.route('/zhangdie', methods=['GET'])
 def getnew():
     d = datetime.datetime.now().date()
+    c = conn.cursor()
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
+    c.close()
     if (v!=None):
         top = [v[0], v[1], v[2]]
     else:
