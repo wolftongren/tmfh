@@ -5,86 +5,13 @@
     <title>Stock Market Status Monitor</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-    <script type="text/javascript">
 
-        var data2 = {{data}};
-
-        //创建图表
-        var chart;
-
-        $(document).ready(function () {
-
-            chart = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'container',
-                    events: {
-                        load: st// 定时器
-                    }
-                },
-                title: {
-                    text: 'Stock Market Status Monitor'
-                },
-                xAxis: {
-                    categories: ['shangzhang', 'xiadie', 'pingpan'],
-                    labels: {
-                        //rotation: -45,
-                        align: 'center'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'No. of stocks'
-                    }
-                },
-
-                plotOptions: {
-                    column: {
-                        colorByPoint : true,
-                        colors:['red', 'green', 'grey'],
-                        dataLabels: {
-                            enabled:true,
-                            formatter:function() {
-                                v=0;
-                                for (i in data2) { v += data2[i];}
-                                a = this.y/v*100;
-                                return a.toFixed(2)+"%";
-                            }
-                        }
-                    }
-                },
-
-                series: [{
-                    name: 'zhangdie distribution',
-                    data: data2,
-                    type: 'column'
-                }]
-
-            });
-
-        });
-
-
-        //2秒钟刷新一次数据
-        function st() {
-            setInterval("getData()", 5000);
-        }
-
-        //动态更新图表数据
-        function getData() {
-
-            $.ajax({
-                type: "get",
-                url: "/new",
-                dataType: "json",
-                success: function (datax) {
-                    chart.series[0].setData(datax);
-                }
-            });
-        }
-
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/zhangdieping.js')}}"></script>
 </head>
+
+
 <body>
 <div id="container"></div>
 </body>
+
 </html>

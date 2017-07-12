@@ -2,13 +2,12 @@ import json
 import pymysql
 import datetime
 from flask import Flask, request, render_template
-from flask.ext.bootstrap import Bootstrap
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
 c = conn.cursor()
+
 
 @app.route('/')
 def hello():
@@ -24,7 +23,7 @@ def hello():
     return render_template('mon.html', data=json.dumps(ones))
 
 
-@app.route('/new', methods=['GET'])
+@app.route('/zhangdie', methods=['GET'])
 def getnew():
     d = datetime.datetime.now().date()
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
@@ -41,5 +40,8 @@ def getnew():
 @app.route('/bs')
 def index():
     return render_template('bs.html', data=json.dumps([1,1,1]))
+
+
+
 
 app.run(host='0.0.0.0', port=8888, debug=True)
