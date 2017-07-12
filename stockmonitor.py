@@ -10,7 +10,6 @@ dfstocks = pd.read_sql(sql, conn)
 conn.close()
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
-c = conn.cursor()
 
 
 t930 = datetime.time(hour=9, minute=30, second=0)
@@ -48,8 +47,10 @@ while True:
         pingpan = len(dff[dff['zhangfu'] == 1])
 
         sql = "insert into mon(date, time, shangzhang, xiadie, pingpan) values (%s, %s, %s, %s, %s)"
+        c = conn.cursor()
         c.execute(sql, (d, t, shangzhang, xiadie, pingpan))
         conn.commit()
+        c.close()
 
     else:
         continue

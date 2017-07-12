@@ -37,6 +37,7 @@ def getnew():
     print top
     return json.dumps(top)
 
+
 @app.route('/bs')
 def index():
     return render_template('bs.html', data=json.dumps([1,1,1]))

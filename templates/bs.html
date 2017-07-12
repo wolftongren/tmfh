@@ -9,7 +9,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename = 'css/dashboard.css')}}" rel="stylesheet">
-	<script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>  
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>  
      <script type="text/javascript">
 
@@ -31,7 +31,7 @@
                     text: 'Stock Market Status Monitor'
                 },
                 xAxis: {
-                    categories: ['shangzhang', 'xiadie', 'pingpan'],
+                    categories: ['zhang', 'die', 'ping'],
                     labels: {
                         //rotation: -45,
                         align: 'center'
@@ -52,7 +52,7 @@
                             formatter: function () {
                                 v = 0;
                                 for (i in data2) {
-                                    v += data2[i];
+                                    v += data2[i].y;
                                 }
                                 a = this.y / v * 100;
                                 return a.toFixed(2) + "%";
