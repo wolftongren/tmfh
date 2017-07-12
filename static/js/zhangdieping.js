@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     chart = new Highcharts.Chart({
         chart: {
-            renderTo: 'container',
+            renderTo: 'columnchart',
             events: {
                 load: st
             }

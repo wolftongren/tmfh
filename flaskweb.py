@@ -20,7 +20,7 @@ def hello():
     else:
         ones = [0,0,0]
     print ones
-    return render_template('mon.html', data=json.dumps(ones))
+    return render_template('main.html', data=json.dumps(ones))
 
 
 @app.route('/zhangdie', methods=['GET'])
@@ -37,9 +37,10 @@ def getnew():
     return json.dumps(top)
 
 
-@app.route('/bs')
+@app.route('/mon')
 def index():
-    return render_template('bs.html', data=json.dumps([1,1,1]))
+    return render_template('mon.html', data=json.dumps([1,1,1]))
+
 
 
 
