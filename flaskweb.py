@@ -14,7 +14,7 @@ def hello():
     c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
-    c.close();
+    c.close()
     if (v != None):
         ones = [v[0], v[1], v[2]]
     else:
@@ -39,13 +39,13 @@ def getnew():
     print top
     return json.dumps(top)
 
-
 @app.route('/mon')
 def index():
     return render_template('mon.html', data=json.dumps([1,1,1]))
 
-
-
+@app.route('/zhangting')
+def zhangting():
+    return render_template('zhangting.html')
 
 
 app.run(host='0.0.0.0', port=8888, debug=True)
