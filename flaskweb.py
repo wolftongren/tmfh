@@ -47,5 +47,9 @@ def index():
 def zhangting():
     return render_template('zhangting.html')
 
+@app.route('/zhangtingjson', methods=['GET'])
+def zhangtingjson():
+    data = [{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}, {"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"},{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}]
+    return json.dumps(data)
 
 app.run(host='0.0.0.0', port=8888, debug=True)

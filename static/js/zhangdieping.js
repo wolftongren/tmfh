@@ -54,10 +54,6 @@ $(document).ready(function () {
 });
 
 
-function st() {
-    setInterval("getData()", 5000);
-}
-
 function getData() {
 
     $.ajax({
@@ -69,4 +65,8 @@ function getData() {
             chart.series[0].setData(datax);
         }
     });
+}
+
+function st() {
+    setInterval("getData()", 5000);
 }
