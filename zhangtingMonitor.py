@@ -23,7 +23,10 @@ while True:
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().time()
 
-    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
+    print "sleeping 5s.."
+    time.sleep(5)
+
+    if (t < t930 and t < t1130) or (t > t1300 and t < t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -35,7 +38,6 @@ while True:
                 dfResult = dfResult.append(df)
 
         dff = dfResult.copy()
-#        print "original len: ", len(dff)
 
         dff['zhangfu'] = 0.0
         dff['chuban'] = 0.0
@@ -81,7 +83,7 @@ while True:
     else:
         continue
 
-    time.sleep(5)
+
 
 
 

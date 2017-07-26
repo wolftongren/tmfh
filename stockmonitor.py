@@ -56,8 +56,8 @@ while True:
         conn.commit()
         c.close()
 
-        time.sleep(30)
-
-
     else:
         continue
+
+    time.sleep(30)
+

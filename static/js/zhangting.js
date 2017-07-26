@@ -3,7 +3,7 @@
  */
 
 function setYiziTable() {
-//    $('#yiziTable').bootstrapTable('destroy');
+    $('#yiziTable').bootstrapTable('destroy');
     $('#yiziTable').bootstrapTable({
         url: '/yizijson',
         columns: [{
@@ -15,13 +15,16 @@ function setYiziTable() {
         }, {
             field: 'name',
             title: 'name'
+        }, {
+            field: 'timeToMarket',
+            title: 'timeToMarket'
         }
         ]
     });
 }
 
 function setBeizaTable() {
-//    $('#beizaTable').bootstrapTable('destroy');
+    $('#beizaTable').bootstrapTable('refresh');
     $('#beizaTable').bootstrapTable({
         url: '/beizajson',
         columns: [{
@@ -43,8 +46,8 @@ function setBeizaTable() {
 
 
 function setZhengchangTable() {
-
- //   $('#zhengchangTable').bootstrapTable('destroy');
+    console.log("inside setZhengchangTable()...")
+    $('#zhengchangTable').bootstrapTable('destroy');
     $('#zhengchangTable').bootstrapTable({
         url: '/zhengchangjson',
         columns: [{
@@ -64,9 +67,11 @@ function setZhengchangTable() {
 }
 
 $(document).ready(function () {
-    console.log("inside document.ready() function");
+
+    setBeizaTable();
+    setYiziTable();
+    setZhengchangTable();
     setInterval("setYiziTable()", 5000);
     setInterval("setBeizaTable()", 5000);
     setInterval("setZhengchangTable()", 5000);
-
 });
