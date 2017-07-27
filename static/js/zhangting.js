@@ -2,30 +2,71 @@
  * Created by tongren on 17-7-26.
  */
 
-function setTable() {
-    $('#chubanTable2').bootstrapTable('destroy');
-
-    $('#chubanTable2').bootstrapTable({
-        url: '/zhangtingjson',
-        columns:[{
-            field:'code',
-            title:'code'
+function setYiziTable() {
+//    $('#yiziTable').bootstrapTable('destroy');
+    $('#yiziTable').bootstrapTable({
+        url: '/yizijson',
+        columns: [{
+            field: 'id',
+            title: 'id'
         }, {
-            field:'name',
-            title:'name'
-        },{
-            field:'pchange',
-            title:'pchange'
-        },{
-            field:'a1_b',
-            title:'a1_b'
+            field: 'code',
+            title: 'code'
+        }, {
+            field: 'name',
+            title: 'name'
         }
         ]
     });
 }
 
+function setBeizaTable() {
+//    $('#beizaTable').bootstrapTable('destroy');
+    $('#beizaTable').bootstrapTable({
+        url: '/beizajson',
+        columns: [{
+            field: 'id',
+            title: 'id'
+        }, {
+            field: 'code',
+            title: 'code'
+        }, {
+            field: 'name',
+            title: 'name'
+        }, {
+            field: 'zf',
+            title: 'zf'
+        }
+        ]
+    });
+}
+
+
+function setZhengchangTable() {
+
+ //   $('#zhengchangTable').bootstrapTable('destroy');
+    $('#zhengchangTable').bootstrapTable({
+        url: '/zhengchangjson',
+        columns: [{
+            field: 'id',
+            title: 'id'
+        }, {
+            field: 'code',
+            title: 'code'
+        }, {
+            field: 'name',
+            title: 'name'
+        }
+        ]
+    });
+
+
+}
+
 $(document).ready(function () {
     console.log("inside document.ready() function");
-    setInterval("setTable()", 5000);
+    setInterval("setYiziTable()", 5000);
+    setInterval("setBeizaTable()", 5000);
+    setInterval("setZhengchangTable()", 5000);
 
 });
