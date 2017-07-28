@@ -11,7 +11,7 @@ engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=u
 
 print "updating basics..."
 ########## updating basics
-sql = "SELECT distinct code, name FROM `basics`"
+sql = "SELECT distinct code, name FROM `stockBasics`"
 dfOld = pd.read_sql(sql, conn)
 print "Old len:", len(dfOld)
 
@@ -21,11 +21,11 @@ print "New len:", len(df)
 
 if len(df) > len(dfOld):
     print "deleting all data from the basics table"
-    delsql = "DELETE FROM `basics`"
+    delsql = "DELETE FROM `stockBasics`"
     cur.execute(delsql)
     conn.commit()
     print "writing new data into the basics table"
-    df.to_sql('basics', engine, if_exists='append')
+    df.to_sql('stockBasics', engine, if_exists='append')
 
 
 ########## updating hist17
@@ -47,8 +47,8 @@ for i in range(0, len(df)):
         dfStock['name']= df['name'][i]
         dfResult = dfResult.append(dfStock, ignore_index=True)
 
-print "writing to history2017..."
-dfResult.to_sql('history2017', engine,  index=False, if_exists='append')
+print "writing to stockData2017..."
+dfResult.to_sql('stockData2017', engine,  index=False, if_exists='append')
 
 cur.close()
 conn.close()

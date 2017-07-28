@@ -26,5 +26,5 @@ for i in range(0, len(dfstocks)):
         dfResult = dfResult.append(df, ignore_index=True)
 
 
-dfResult.to_sql('histdata2017', engine,  index=False, if_exists='append')
+dfResult.to_sql('stockData2017', engine,  index=False, if_exists='append')
 

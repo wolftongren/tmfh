@@ -7,11 +7,11 @@ import time
 import datetime
 from sqlalchemy import create_engine
 
-conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stockdata', charset='utf8')
-sql = "SELECT distinct code, name FROM `basics`"
+conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
+sql = "SELECT distinct code, name FROM `stockBasics`"
 dfstocks = pd.read_sql(sql, conn)
 
-engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/falcon?charset=utf8')
+engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
 t930 = datetime.time(hour=9, minute=30, second=0)
 t1130 = datetime.time(hour=11, minute=30, second=10)
@@ -26,7 +26,7 @@ while True:
     print "sleeping 5s.."
     time.sleep(5)
 
-    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
+    if (t > t930 and t < t1130) or (t > t1300 and t > t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -59,6 +59,18 @@ while True:
         dff['chuban'] = dff['high'] / dff['pre_close']
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
 
+##########################Zhang Die Ping##############################
+        shangzhang = len(dff[dff['zhangfu'] > 1])
+        xiadie = len(dff[dff['zhangfu'] < 1])
+        pingpan = len(dff[dff['zhangfu'] == 1])
+        sql = "insert into rtZhangDiePing(date, time, shangzhang, xiadie, pingpan) values (%s, %s, %s, %s, %s)"
+        c = conn.cursor()
+        c.execute(sql, (d, t, shangzhang, xiadie, pingpan))
+        conn.commit()
+        c.close()
+##########################Zhang Die Ping##############################
+
+
         dffshoufa = dff[dff['chuban']>1.4]
         print "shoufa: ", len(dffshoufa)
 
@@ -71,7 +83,7 @@ while True:
         #print dffchuban[['code', 'name', 'zf', 'a1_v']]
         print "jinri zhangting chuban: ", len(dffchuban)
         #print dffchuban['name']
-        dffchuban.to_sql('chuban', engine, index=False, if_exists='append')
+        dffchuban.to_sql('rtChuBan', engine, index=False, if_exists='append')
 
         dffyizizhangting = dffchuban[dffchuban['low'] == dffchuban['high']]
         dffzhengchang = dffchuban[dffchuban['low'] != dffchuban['high']]
@@ -80,16 +92,16 @@ while True:
 
         dffyizizhangting = dffyizizhangting.append(dffshoufa)
         print "yizi zhangting......", len(dffyizizhangting)
-        dffyizizhangting.to_sql('yizi', engine, index=False, if_exists='append')
+        dffyizizhangting.to_sql('rtYiZi', engine, index=False, if_exists='append')
 
         dffzhangting = dffzhengchang[dffzhengchang['a1_p']==0]
         print "zhengchang zhangting liebiao......", len(dffzhangting)
         print dffzhangting['name']
-        dffzhangting.to_sql('zhengchang', engine, index=False, if_exists='append')
+        dffzhangting.to_sql('rtZhengChang', engine, index=False, if_exists='append')
 
         dffbeiza = dffzhengchang[dffzhengchang['a1_p'] > 0 ]
         print "zhangting beiza liebiao......", len(dffbeiza)
-        dffbeiza.to_sql('beiza', engine, index=False, if_exists='append')
+        dffbeiza.to_sql('rtBeiZa', engine, index=False, if_exists='append')
 
     else:
         continue

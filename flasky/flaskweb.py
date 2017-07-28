@@ -7,14 +7,14 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
+conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
 
 
 @app.route('/')
 def hello():
     d = datetime.datetime.now().date()
     c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
     c.close()
@@ -29,7 +29,7 @@ def hello():
 def getnew():
     d = datetime.datetime.now().date()
     c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from mon where date = %s order by time desc limit 1', d)
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
     c.close()
@@ -58,7 +58,7 @@ def zhangtingjson():
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().strftime("%H:%M:%S")
     c = conn.cursor()
-    c.execute("select code, name, zf, a1_v from chuban where date = %s order by time desc limit 50", d)
+    c.execute("select code, name, zf, a1_v from rtChuBan where date = %s order by time desc limit 50", d)
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -84,11 +84,11 @@ def yizijson():
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().strftime("%H:%M:%S")
     c = conn.cursor()
-    c.execute("select rtime, count(*) as num from yizi where date = %s group by rtime order by rtime desc", d)
+    c.execute("select rtime, count(*) as num from rtYiZi where date = %s group by rtime order by rtime desc", d)
     v = c.fetchone()
     num = v[1]
 
-    sql = "select y.code, y.name, b.timeToMarket from yizi as y join basics as b on y.code = b.code where date = %s order by rtime desc limit %s"
+    sql = "select y.code, y.name, b.timeToMarket from rtYiZi as y join stockBasics as b on y.code = b.code where date = %s order by rtime desc limit %s"
     c.execute(sql, (d,num))
 
     #c.execute("select code, name from yizi where date = %s order by rtime desc limit %s", (d, num) )
@@ -118,11 +118,11 @@ def beizajson():
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().strftime("%H:%M:%S")
     c = conn.cursor()
-    c.execute("select rtime, count(*) as num from beiza where date = %s group by rtime order by rtime desc", d)
+    c.execute("select rtime, count(*) as num from rtBeiZa where date = %s group by rtime order by rtime desc", d)
     v = c.fetchone()
     num = v[1]
 
-    c.execute("select code, name, round(zf,2) from beiza where date = %s order by rtime desc limit %s", (d, num) )
+    c.execute("select code, name, round(zf,2) from rtBeiZa where date = %s order by rtime desc limit %s", (d, num) )
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -149,11 +149,11 @@ def zhengchangjson():
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().strftime("%H:%M:%S")
     c = conn.cursor()
-    c.execute("select rtime, count(*) as num from zhengchang where date = %s group by rtime order by rtime desc", d)
+    c.execute("select rtime, count(*) as num from rtZhengChang where date = %s group by rtime order by rtime desc", d)
     v = c.fetchone()
     num = v[1]
 
-    c.execute("select code, name from zhengchang where date = %s order by rtime desc limit %s", (d, num) )
+    c.execute("select code, name from rtZhengChang where date = %s order by rtime desc limit %s", (d, num) )
     v = c.fetchall()
     conn.commit()
     c.close()

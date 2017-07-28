@@ -4,9 +4,9 @@ import pymysql
 import time
 import datetime
 
-print("getting data from basics...")
+print("getting data from stockBasics...")
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stockdata', charset='utf8')
-sql = "SELECT distinct code, name FROM `basics`"
+sql = "SELECT distinct code, name FROM `stockBasics`"
 dfstocks = pd.read_sql(sql, conn)
 conn.close()
 

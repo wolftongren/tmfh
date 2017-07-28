@@ -4,12 +4,12 @@ from sqlalchemy import create_engine
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
 
-print "reading history from table histdata2017"
-sql = "SELECT code, name, close, high, low, open, volume, date, p_change  FROM `histdata2017` where date>'2017-01-01' order by date asc "
+print "reading history from table stockData2017"
+sql = "SELECT code, name, close, high, low, open, volume, date, p_change  FROM `stockData2017` where date>'2017-01-01' order by date asc "
 dfAll = pd.read_sql(sql, conn)
 
-print "reading date from table histdata2017"
-sqlDate = "SELECT distinct date FROM `histdata2017` where date>'2017-01-01' order by date asc "
+print "reading date from table stockData2017"
+sqlDate = "SELECT distinct date FROM `stockData2017` where date>'2017-01-01' order by date asc "
 dfDate = pd.read_sql(sqlDate, conn)
 
 print "start calculating..."
