@@ -3,7 +3,7 @@
  */
 
 function setYiziTable() {
-    $('#yiziTable').bootstrapTable('destroy');
+    $('#yiziTable').bootstrapTable('refresh');
     $('#yiziTable').bootstrapTable({
         url: '/yizijson',
         columns: [{
@@ -47,7 +47,7 @@ function setBeizaTable() {
 
 function setZhengchangTable() {
     console.log("inside setZhengchangTable()...")
-    $('#zhengchangTable').bootstrapTable('destroy');
+    $('#zhengchangTable').bootstrapTable('refresh');
     $('#zhengchangTable').bootstrapTable({
         url: '/zhengchangjson',
         columns: [{

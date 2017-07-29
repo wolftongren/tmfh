@@ -26,7 +26,7 @@ while True:
     print "sleeping 5s.."
     time.sleep(5)
 
-    if (t < t930 and t < t1130) or (t > t1300 and t < t1500):
+    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -50,6 +50,7 @@ while True:
         dff[['price']] = dff[['price']].astype(float)
         dff[['pre_close']] = dff[['pre_close']].astype(float)
         dff[['high']] = dff[['high']].astype(float)
+        dff[['low']] = dff[['low']].astype(float)
         dff[['zf']] = dff[['zf']].astype(float)
         dff[['a1_p']] = dff[['a1_p']].astype(float)
         dff[['open']] = dff[['open']].astype(float)
@@ -58,25 +59,35 @@ while True:
         dff['chuban'] = dff['high'] / dff['pre_close']
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
 
-        dffchuban = dff[dff['chuban']>1.099]
+        dffshoufa = dff[dff['chuban']>1.4]
+        print "shoufa: ", len(dffshoufa)
+
+        dff = dff[dff['chuban']>1.099]
+        print "before chuban.................: ", len(dff)
+        dffchuban = dff[dff['chuban']<1.4]
+        print "after chuban..................: ", len(dffchuban)
+
+
         #print dffchuban[['code', 'name', 'zf', 'a1_v']]
         print "jinri zhangting chuban: ", len(dffchuban)
+        #print dffchuban['name']
         dffchuban.to_sql('chuban', engine, index=False, if_exists='append')
 
-        dffyizikaipan = dffchuban[dffchuban['open'] == dffchuban['high']]
-        dffzhengchang = dffchuban[dffchuban['open'] != dffchuban['high']]
+        dffyizizhangting = dffchuban[dffchuban['low'] == dffchuban['high']]
+        dffzhengchang = dffchuban[dffchuban['low'] != dffchuban['high']]
+       # print dffzhengchang['name']
         #print dffyizikaipan[['code', 'name', 'zf']]
 
-
-        dffyizizhangting = dffyizikaipan[dffyizikaipan['a1_p'] == 0]
+        dffyizizhangting = dffyizizhangting.append(dffshoufa)
         print "yizi zhangting......", len(dffyizizhangting)
         dffyizizhangting.to_sql('yizi', engine, index=False, if_exists='append')
 
         dffzhangting = dffzhengchang[dffzhengchang['a1_p']==0]
         print "zhengchang zhangting liebiao......", len(dffzhangting)
+        print dffzhangting['name']
         dffzhangting.to_sql('zhengchang', engine, index=False, if_exists='append')
 
-        dffbeiza = dffchuban[dffchuban['a1_p'] > 0 ]
+        dffbeiza = dffzhengchang[dffzhengchang['a1_p'] > 0 ]
         print "zhangting beiza liebiao......", len(dffbeiza)
         dffbeiza.to_sql('beiza', engine, index=False, if_exists='append')
 
