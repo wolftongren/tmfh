@@ -4,6 +4,7 @@ import pymysql
 import time
 import datetime
 
+print("getting data from basics...")
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stockdata', charset='utf8')
 sql = "SELECT distinct code, name FROM `basics`"
 dfstocks = pd.read_sql(sql, conn)
@@ -12,19 +13,22 @@ conn.close()
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='falcon', charset='utf8')
 
 
-t930 = datetime.time(hour=9, minute=30, second=0)
+t925 = datetime.time(hour=9, minute=25, second=0)
 t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
 
-while True:
+print ("in While True...")
 
-    time.sleep(30)
+while True:
 
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().time()
 
-    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
+    time.sleep(30)
+
+
+    if (t > t925 and t < t1130) or (t > t1300 and t < t1500):
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
         for i in range(0, len(dfstocks) / 500 + 1):
@@ -36,7 +40,10 @@ while True:
 
         dfResult['zhangfu'] = 0.0
 
-        dff = dfResult[dfResult['volume'] > '0']
+        dff = dfResult.copy()
+        dff = dff[dff['volume'] > '0']
+
+        #dff = dfResult[dfResult['volume'] > '0']
         dff[['price']] = dff[['price']].astype(float)
         dff[['pre_close']] = dff[['pre_close']].astype(float)
 
@@ -54,3 +61,5 @@ while True:
 
     else:
         continue
+
+
