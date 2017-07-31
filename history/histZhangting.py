@@ -13,7 +13,7 @@ sql = "SELECT distinct code, name FROM `stockBasics`"
 dfCode = pd.read_sql(sql, conn)
 
 print "reading trading history from stockData2017..."
-sql = "SELECT code, name, close, high, low, open, date FROM `stockData2017` order by date asc"
+sql = "SELECT code, name, close, high, low, open, date FROM `stockData1317` order by date asc"
 dfTrans = pd.read_sql(sql, conn)
 
 #print (df)
@@ -50,12 +50,12 @@ for n in range(0, len(dfCode)):
             else:
                 sLine['zhangting'] = 0
                 sLine['beiza'] = 1
-            sLine['open'] = round ((tmrOpen / todayHigh - 1)*100, 2)
-            sLine['high'] = round ((tmrHigh / todayHigh - 1)*100, 2)
-            sLine['close'] = round ((tmrClose / todayHigh - 1)*100, 2)
+            sLine['ciriOpen'] = round ((tmrOpen / todayHigh - 1)*100, 2)
+            sLine['ciriHigh'] = round ((tmrHigh / todayHigh - 1)*100, 2)
+            sLine['ciriClose'] = round ((tmrClose / todayHigh - 1)*100, 2)
 
             dfResult = dfResult.append(sLine, ignore_index=True)
 
 print "writing to table - zhangtingHistory", len(dfResult)
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
-dfResult.to_sql('histZhangting', engine, index=False, if_exists='append')
+dfResult.to_sql('histZhangting1317', engine, index=False, if_exists='append')

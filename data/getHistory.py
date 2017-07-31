@@ -14,8 +14,8 @@ dfResult = pd.DataFrame()
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 for i in range(0, len(dfstocks)):
     print i, dfstocks['code'][i]
-    # modify the start and end date here......
-    df = ts.get_hist_data(dfstocks['code'][i], start='2017-07-15', end='2017-07-30')
+    # modify the api, start and end date here......
+    df = ts.get_k_data(dfstocks['code'][i], autype=None, start='2017-06-10', end='2017-07-31')
     if df is None:
         pass
     else:
@@ -25,6 +25,6 @@ for i in range(0, len(dfstocks)):
 
         dfResult = dfResult.append(df, ignore_index=True)
 
-
-dfResult.to_sql('stockData2017', engine,  index=False, if_exists='append')
+#modify the database table name here
+dfResult.to_sql('histKdataNone1317', engine,  index=False, if_exists='append')
 
