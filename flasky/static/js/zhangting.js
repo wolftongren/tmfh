@@ -3,7 +3,7 @@
  */
 
 function setYiziTable() {
-    $('#yiziTable').bootstrapTable('refresh');
+    $('#yiziTable').bootstrapTable('destroy');
     $('#yiziTable').bootstrapTable({
         url: '/yizijson',
         columns: [{
@@ -24,7 +24,7 @@ function setYiziTable() {
 }
 
 function setBeizaTable() {
-    $('#beizaTable').bootstrapTable('refresh');
+    $('#beizaTable').bootstrapTable('destroy');
     $('#beizaTable').bootstrapTable({
         url: '/beizajson',
         columns: [{
@@ -47,7 +47,7 @@ function setBeizaTable() {
 
 function setZhengchangTable() {
     console.log("inside setZhengchangTable()...")
-    $('#zhengchangTable').bootstrapTable('refresh');
+    $('#zhengchangTable').bootstrapTable('destroy');
     $('#zhengchangTable').bootstrapTable({
         url: '/zhengchangjson',
         columns: [{

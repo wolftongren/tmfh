@@ -88,10 +88,11 @@ def yizijson():
     v = c.fetchone()
     num = v[1]
 
-    sql = "select y.code, y.name, b.timeToMarket from rtYiZi as y join stockBasics as b on y.code = b.code where date = %s order by rtime desc limit %s"
+    #sql = "select y.code, y.name, b.timeToMarket from stockBasics as b right join rtYiZi as y on y.code = b.code where date = %s order by rtime desc limit %s"
+    sql = "select y.code, y.name from rtYiZi as y where date = %s order by rtime desc limit %s"
+
     c.execute(sql, (d,num))
 
-    #c.execute("select code, name from yizi where date = %s order by rtime desc limit %s", (d, num) )
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -104,12 +105,13 @@ def yizijson():
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
-            result['timeToMarket'] = row[2]
+            result['timeToMarket'] = ''
+
 
             i=i+1
             jsonData.append(result)
 
-        print "jsonData: ", jsonData
+        print "yizijson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -140,7 +142,7 @@ def beizajson():
             i=i+1
             jsonData.append(result)
 
-        print "jsonData: ", jsonData
+        print "beizajson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -170,7 +172,7 @@ def zhengchangjson():
             i=i+1
             jsonData.append(result)
 
-        print "jsonData: ", jsonData
+        print "zhengchangjson: ", i, jsonData
         return json.dumps(jsonData)
 
 

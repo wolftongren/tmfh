@@ -26,7 +26,7 @@ for n in range(0, len(dfCode)):
 
     print n, code, name
 
-    sLine = pd.Series(index=['date', 'code', 'name', 'zhangting', 'beiza', 'gaokai', 'zuigao'])
+    sLine = pd.Series(index=['date', 'code', 'name', 'zhangting', 'beiza', 'ciriOpen', 'ciriHigh', 'ciriClose'])
 
     for i in range(1, len(df)-1):
         if len(df) < 3:
@@ -50,8 +50,10 @@ for n in range(0, len(dfCode)):
             else:
                 sLine['zhangting'] = 0
                 sLine['beiza'] = 1
-            sLine['gaokai'] = round ((tmrOpen / todayHigh - 1)*100, 2)
-            sLine['zuigao'] = round ((tmrHigh / todayHigh - 1)*100, 2)
+            sLine['open'] = round ((tmrOpen / todayHigh - 1)*100, 2)
+            sLine['high'] = round ((tmrHigh / todayHigh - 1)*100, 2)
+            sLine['close'] = round ((tmrClose / todayHigh - 1)*100, 2)
+
             dfResult = dfResult.append(sLine, ignore_index=True)
 
 print "writing to table - zhangtingHistory", len(dfResult)
