@@ -11,6 +11,9 @@ conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr'
 sql = "SELECT distinct code, name FROM `stockBasics`"
 dfstocks = pd.read_sql(sql, conn)
 
+sql = "select * from `histZhangtingStock`"
+dfZhangtingHistory = pd.read_sql(sql, conn)
+
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
 t930 = datetime.time(hour=9, minute=30, second=0)
@@ -26,7 +29,7 @@ while True:
     print "sleeping 5s.."
     time.sleep(5)
 
-    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
+    if (t > t930 and t < t1130) or (t > t1300 and t > t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -68,8 +71,45 @@ while True:
         c.execute(sql, (d, t, shangzhang, xiadie, pingpan))
         conn.commit()
         c.close()
-##########################Zhang Die Ping##############################
 
+
+##########################ZhangTing Tishi##############################
+        dfMonitor = dff[dff['zhangfu'] > 1.080]
+        dfMonitor = dfMonitor[dfMonitor['zhangfu'] < 1.099]
+
+        # dfMonitor = ['300153', '002835', '002695', '000025', '002302', '002822', '002591', '002510', '603767', '002282', '300112']
+
+        dfPrintAll = pd.DataFrame()
+        for i in range(0, len(dfMonitor)):
+            code = dfMonitor.iloc[i]['code']
+            name = dfMonitor.iloc[i]['name']
+
+            # code = dfMonitor[i]
+
+            s = pd.Series(index=['code', 'name', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv'])
+            s[['code']] = s[['code']].astype(str)
+            dfPrint = dfZhangtingHistory[dfZhangtingHistory['code'] == code]
+            if len(dfPrint):
+                s['code'] = code
+                s['name'] = dfPrint.iloc[0]['name']
+                s['chubanCount'] = dfPrint.iloc[0]['chubanCount']
+                s['beizaLv'] = dfPrint.iloc[0]['beizaLv']
+                s['gaokaiLv'] = dfPrint.iloc[0]['gaokaiLv']
+                s['baobenLv'] = dfPrint.iloc[0]['baobenLv']
+                s['shoupanLv'] = dfPrint.iloc[0]['shoupanLv']
+
+                # print dfPrint[['code', 'name', 'chubanCount', 'beizaLv', 'gaokaiLv']]
+            else:
+                s['code'] = code
+                s['name'] = name
+                # print "no zhangting history: ", dfMonitor.iloc[i]['name']
+            dfPrintAll = dfPrintAll.append(s, ignore_index=True)
+
+        if len(dfPrintAll):
+            print dfPrintAll[['code', 'name', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv']]
+
+
+###################Zhangting Yizi, BeiZa, ZhengChang#######################
 
         dffshoufa = dff[dff['chuban']>1.4]
         print "shoufa: ", len(dffshoufa)
@@ -96,7 +136,6 @@ while True:
 
         dffzhangting = dffzhengchang[dffzhengchang['a1_p']==0]
         print "zhengchang zhangting liebiao......", len(dffzhangting)
-        print dffzhangting['name']
         dffzhangting.to_sql('rtZhengChang', engine, index=False, if_exists='append')
 
         dffbeiza = dffzhengchang[dffzhengchang['a1_p'] > 0 ]
