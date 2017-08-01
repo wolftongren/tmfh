@@ -50,6 +50,47 @@ def zhangting():
     return render_template('zhangting.html')
 
 
+@app.route('/dabantishijson', methods=['GET'])
+def dabantishijson():
+    d = datetime.datetime.now().date()
+    t = datetime.datetime.now().strftime("%H:%M:%S")
+    c = conn.cursor()
+    c.execute("select rtime, count(*) as num from rtDabanTishi where date = %s group by rtime order by rtime desc", d)
+    v = c.fetchone()
+    num = v[1]
+
+    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi where date = %s order by rtime desc limit %s", (d, num) )
+    v = c.fetchall()
+    conn.commit()
+    c.close()
+    if (v != None):
+        jsonData = []
+        i=1
+        for row in v:
+            result = {}
+            # print "row[0]: ", row[0]
+            result['id']=i
+            result['code'] = row[0]
+            result['name'] = row[1]
+            result['zf'] = row[2]
+            result['chubanCount3'] = row[3]
+            result['beizaLv3'] = row[4]
+            result['gaokaiLv3'] = row[5]
+            result['baobenLv3'] = row[6]
+            result['shoupanLv3'] = row[7]
+            result['chubanCount'] = row[8]
+            result['beizaLv'] = row[9]
+            result['gaokaiLv'] = row[10]
+            result['baobenLv'] = row[11]
+            result['shoupanLv'] = row[12]
+
+            i=i+1
+            jsonData.append(result)
+
+        print "dabantishijson: ", i, jsonData
+        return json.dumps(jsonData)
+
+
 @app.route('/chubanjson', methods=['GET'])
 def zhangtingjson():
     # data = [{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}, {"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"},{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}]
@@ -75,7 +116,7 @@ def zhangtingjson():
 
             jsonData.append(result)
 
-        print "jsonData: ", jsonData
+#        print "jsonData: ", jsonData
         return json.dumps(jsonData)
 
 
@@ -111,7 +152,7 @@ def yizijson():
             i=i+1
             jsonData.append(result)
 
-        print "yizijson: ", i, jsonData
+ #       print "yizijson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -142,7 +183,7 @@ def beizajson():
             i=i+1
             jsonData.append(result)
 
-        print "beizajson: ", i, jsonData
+#        print "beizajson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -172,7 +213,7 @@ def zhengchangjson():
             i=i+1
             jsonData.append(result)
 
-        print "zhengchangjson: ", i, jsonData
+#        print "zhengchangjson: ", i, jsonData
         return json.dumps(jsonData)
 
 
