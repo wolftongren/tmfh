@@ -54,12 +54,15 @@ def zhangting():
 def dabantishijson():
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().strftime("%H:%M:%S")
-    c = conn.cursor()
-    c.execute("select rtime, count(*) as num from rtDabanTishi where date = %s group by rtime order by rtime desc", d)
-    v = c.fetchone()
-    num = v[1]
 
-    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi where date = %s order by rtime desc limit %s", (d, num) )
+    c = conn.cursor()
+#    c.execute("select rtime, count(*) as num from rtDabanTishi where date = %s group by rtime order by rtime desc", d)
+#    v = c.fetchone()
+#    num = v[1]
+#    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi where date = %s order by rtime desc limit %s", (d, num) )
+
+    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi")
+
     v = c.fetchall()
     conn.commit()
     c.close()

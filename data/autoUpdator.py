@@ -28,7 +28,7 @@ if len(df) > len(dfOld):
     df.to_sql('stockBasics', engine, if_exists='append')
 
 
-########## updating hist17
+########## updating history2017
 print "updating history2017..."
 t = datetime.datetime.now()
 todayDate = str(t.date())

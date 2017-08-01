@@ -20,34 +20,34 @@ function setDabanTable() {
             title: 'zf'
         }, {
             field: 'chubanCount3',
-            title: 'chubanCount3'
+            title: 'cb3'
         }, {
             field: 'beizaLv3',
-            title: 'beizaLv3'
+            title: 'beiza%3'
         }, {
             field: 'gaokaiLv3',
-            title: 'gaokaiLv3'
+            title: 'gaokai%3'
         }, {
             field: 'baobenLv3',
-            title: 'baobenLv3'
+            title: 'baoben%3'
         }, {
             field: 'shoupanLv3',
-            title: 'shoupanLv3'
+            title: 'shoupan%3'
         }, {
             field: 'chubanCount',
-            title: 'chubanCount'
+            title: 'cb'
         }, {
             field: 'beizaLv',
-            title: 'beizaLv'
+            title: 'beiza%'
         }, {
             field: 'gaokaiLv',
-            title: 'gaokaiLv'
+            title: 'gaokai%'
         }, {
             field: 'baobenLv',
-            title: 'baobenLv'
+            title: 'baoben%'
         }, {
             field: 'shoupanLv',
-            title: 'shoupanLv'
+            title: 'shoupan%'
         }
         ]
     });
@@ -123,9 +123,9 @@ $(document).ready(function () {
     setBeizaTable();
     setYiziTable();
     setZhengchangTable();
-    setInterval("setYiziTable()", 5000);
-    setInterval("setBeizaTable()", 5000);
-    setInterval("setZhengchangTable()", 5000);
+    setInterval("setYiziTable()", 30000);
+    setInterval("setBeizaTable()", 30000);
+    setInterval("setZhengchangTable()", 30000);
     setInterval("setDabanTable()", 5000);
 
 });

@@ -76,7 +76,7 @@ while True:
         c.close()
 
 
-##########################ZhangTing Tishi##############################
+##########################Daban Tishi##############################
         dfMonitor = dff[dff['zhangfu'] > 1.080]
         dfMonitor = dfMonitor[dfMonitor['zhangfu'] < 1.099]
 
@@ -93,6 +93,7 @@ while True:
             s['name'] = name
             s['zf'] = round(zf,2)
 
+            #data from 2013-2017
             dfPrint1317 = dfZhangtingHistory1317[dfZhangtingHistory1317['code'] == code]
             if len(dfPrint1317):
                 s['chubanCount3'] = dfPrint1317.iloc[0]['chubanCount']
@@ -101,8 +102,9 @@ while True:
                 s['baobenLv3'] = dfPrint1317.iloc[0]['baobenLv']
                 s['shoupanLv3'] = dfPrint1317.iloc[0]['shoupanLv']
 
+            #data from 2017-01-01 -- 2017-07-31
             dfPrint2017 = dfZhangtingHistory2017[dfZhangtingHistory2017['code'] == code]
-            if len(dfPrint1317):
+            if len(dfPrint2017):
                 s['chubanCount'] = dfPrint2017.iloc[0]['chubanCount']
                 s['beizaLv'] = dfPrint2017.iloc[0]['beizaLv']
                 s['gaokaiLv'] = dfPrint2017.iloc[0]['gaokaiLv']
@@ -117,7 +119,7 @@ while True:
             dfPrintAll['rtime'] = datetime.datetime.now().strftime("%H:%M:%S")
 
             print dfPrintAll[['date', 'rtime', 'code', 'name', 'zf', 'chubanCount3', 'beizaLv3', 'gaokaiLv3', 'baobenLv3', 'shoupanLv3', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv']]
-            dfPrintAll.to_sql('rtDabanTishi', engine, index=False, if_exists='append')
+            dfPrintAll.to_sql('rtDabanTishi', engine, index=False, if_exists='replace')
 
 
 ###################Zhangting Yizi, BeiZa, ZhengChang#######################
