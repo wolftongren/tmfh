@@ -19,6 +19,9 @@ function setDabanTable() {
             field: 'zf',
             title: 'zf'
         }, {
+            field: 'high',
+            title: 'high'
+        }, {
             field: 'chubanCount3',
             title: 'cb3'
         }, {
@@ -91,6 +94,9 @@ function setBeizaTable() {
         }, {
             field: 'zf',
             title: 'zf'
+        }, {
+            field: 'industry',
+            title: 'industry'
         }
         ]
     });
@@ -111,6 +117,9 @@ function setZhengchangTable() {
         }, {
             field: 'name',
             title: 'name'
+        }, {
+            field: 'industry',
+            title: 'industry'
         }
         ]
     });

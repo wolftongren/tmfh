@@ -52,17 +52,9 @@ def zhangting():
 
 @app.route('/dabantishijson', methods=['GET'])
 def dabantishijson():
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().strftime("%H:%M:%S")
 
     c = conn.cursor()
-#    c.execute("select rtime, count(*) as num from rtDabanTishi where date = %s group by rtime order by rtime desc", d)
-#    v = c.fetchone()
-#    num = v[1]
-#    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi where date = %s order by rtime desc limit %s", (d, num) )
-
-    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv from rtDabanTishi")
-
+    c.execute("select code, name, round(zf,2), chubancount3, beizaLv3, gaokaiLv3, baobenLv3, shoupanLv3, chubanCount, beizaLv, gaokaiLv, baobenLv, shoupanLv, high from rtDabanTishi")
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -76,6 +68,7 @@ def dabantishijson():
             result['code'] = row[0]
             result['name'] = row[1]
             result['zf'] = row[2]
+            result['high'] = row[13]
             result['chubanCount3'] = row[3]
             result['beizaLv3'] = row[4]
             result['gaokaiLv3'] = row[5]
@@ -90,7 +83,7 @@ def dabantishijson():
             i=i+1
             jsonData.append(result)
 
-        print "dabantishijson: ", i, jsonData
+#        print "dabantishijson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -99,10 +92,8 @@ def zhangtingjson():
     # data = [{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}, {"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"},{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}]
     # return json.dumps(data)
 
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().strftime("%H:%M:%S")
     c = conn.cursor()
-    c.execute("select code, name, zf, a1_v from rtChuBan where date = %s order by time desc limit 50", d)
+    c.execute("select code, name, zf, a1_v from rtChuBan where 1")
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -119,23 +110,16 @@ def zhangtingjson():
 
             jsonData.append(result)
 
-#        print "jsonData: ", jsonData
         return json.dumps(jsonData)
 
 
 @app.route('/yizijson', methods=['GET'])
 def yizijson():
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().strftime("%H:%M:%S")
+
+    sql = "select y.code, y.name, b.timeToMarket from stockBasics as b right join rtYiZi as y on y.code = b.code order by b.timeToMarket desc"
+#   sql = "select y.code, y.name from rtYiZi as y where 1"
     c = conn.cursor()
-    c.execute("select rtime, count(*) as num from rtYiZi where date = %s group by rtime order by rtime desc", d)
-    v = c.fetchone()
-    num = v[1]
-
-    #sql = "select y.code, y.name, b.timeToMarket from stockBasics as b right join rtYiZi as y on y.code = b.code where date = %s order by rtime desc limit %s"
-    sql = "select y.code, y.name from rtYiZi as y where date = %s order by rtime desc limit %s"
-
-    c.execute(sql, (d,num))
+    c.execute(sql)
 
     v = c.fetchall()
     conn.commit()
@@ -149,8 +133,7 @@ def yizijson():
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
-            result['timeToMarket'] = ''
-
+            result['timeToMarket'] = row[2]
 
             i=i+1
             jsonData.append(result)
@@ -161,14 +144,11 @@ def yizijson():
 
 @app.route('/beizajson', methods=['GET'])
 def beizajson():
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().strftime("%H:%M:%S")
-    c = conn.cursor()
-    c.execute("select rtime, count(*) as num from rtBeiZa where date = %s group by rtime order by rtime desc", d)
-    v = c.fetchone()
-    num = v[1]
 
-    c.execute("select code, name, round(zf,2) from rtBeiZa where date = %s order by rtime desc limit %s", (d, num) )
+    c = conn.cursor()
+    sql = "select y.code, y.name, round(y.zf,2), s.industry from rtBeiZa as y left join stockBasics as s on y.code = s.code order by y.zf"
+    c.execute(sql)
+ #   c.execute("select code, name, round(zf,2) from rtBeiZa where 1")
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -182,24 +162,20 @@ def beizajson():
             result['code'] = row[0]
             result['name'] = row[1]
             result['zf'] = row[2]
+            result['industry'] = row[3]
 
             i=i+1
             jsonData.append(result)
 
-#        print "beizajson: ", i, jsonData
+        print "beizajson: ", i, jsonData
         return json.dumps(jsonData)
 
 
 @app.route('/zhengchangjson', methods=['GET'])
 def zhengchangjson():
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().strftime("%H:%M:%S")
-    c = conn.cursor()
-    c.execute("select rtime, count(*) as num from rtZhengChang where date = %s group by rtime order by rtime desc", d)
-    v = c.fetchone()
-    num = v[1]
 
-    c.execute("select code, name from rtZhengChang where date = %s order by rtime desc limit %s", (d, num) )
+    c = conn.cursor()
+    c.execute("select l.code, l.name, r.industry from rtZhengChang as l left join stockBasics as r on l.code=r.code ")
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -212,6 +188,8 @@ def zhengchangjson():
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
+            result['industry'] = row[2]
+
 
             i=i+1
             jsonData.append(result)

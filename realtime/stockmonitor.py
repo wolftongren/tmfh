@@ -85,14 +85,16 @@ while True:
             code = dfMonitor.iloc[i]['code']
             name = dfMonitor.iloc[i]['name']
             zf = dfMonitor.iloc[i]['zf']
+            high = (dfMonitor.iloc[i]['high'] / dfMonitor.iloc[i]['pre_close'] - 1) * 100
+            print high
 
-            s = pd.Series(index=['code', 'name', 'zf', 'chubanCount3', 'beizaLv3', 'gaokaiLv3', 'baobenLv3', 'shoupanLv3', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv'])
+            s = pd.Series(index=['code', 'name', 'zf', 'high', 'chubanCount3', 'beizaLv3', 'gaokaiLv3', 'baobenLv3', 'shoupanLv3', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv'])
             s[['code']] = s[['code']].astype(str)
 
             s['code'] = code
             s['name'] = name
-            s['zf'] = round(zf,2)
-
+            s['zf'] = round(zf, 2)
+            s['high'] = round(high, 2)
             #data from 2013-2017
             dfPrint1317 = dfZhangtingHistory1317[dfZhangtingHistory1317['code'] == code]
             if len(dfPrint1317):
@@ -118,7 +120,7 @@ while True:
             dfPrintAll['date'] = datetime.datetime.now().date()
             dfPrintAll['rtime'] = datetime.datetime.now().strftime("%H:%M:%S")
 
-            print dfPrintAll[['date', 'rtime', 'code', 'name', 'zf', 'chubanCount3', 'beizaLv3', 'gaokaiLv3', 'baobenLv3', 'shoupanLv3', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv']]
+            print dfPrintAll[['date', 'rtime', 'code', 'name', 'zf', 'high', 'chubanCount3', 'beizaLv3', 'gaokaiLv3', 'baobenLv3', 'shoupanLv3', 'chubanCount', 'beizaLv', 'gaokaiLv', 'baobenLv', 'shoupanLv']]
             dfPrintAll.to_sql('rtDabanTishi', engine, index=False, if_exists='replace')
 
 
@@ -136,7 +138,7 @@ while True:
         #print dffchuban[['code', 'name', 'zf', 'a1_v']]
         print "jinri zhangting chuban: ", len(dffchuban)
         #print dffchuban['name']
-        dffchuban.to_sql('rtChuBan', engine, index=False, if_exists='append')
+        dffchuban.to_sql('rtChuBan', engine, index=False, if_exists='replace')
 
         dffyizizhangting = dffchuban[dffchuban['low'] == dffchuban['high']]
         dffzhengchang = dffchuban[dffchuban['low'] != dffchuban['high']]
@@ -145,15 +147,15 @@ while True:
 
         dffyizizhangting = dffyizizhangting.append(dffshoufa)
         print "yizi zhangting......", len(dffyizizhangting)
-        dffyizizhangting.to_sql('rtYiZi', engine, index=False, if_exists='append')
+        dffyizizhangting.to_sql('rtYiZi', engine, index=False, if_exists='replace')
 
         dffzhangting = dffzhengchang[dffzhengchang['a1_p']==0]
         print "zhengchang zhangting liebiao......", len(dffzhangting)
-        dffzhangting.to_sql('rtZhengChang', engine, index=False, if_exists='append')
+        dffzhangting.to_sql('rtZhengChang', engine, index=False, if_exists='replace')
 
         dffbeiza = dffzhengchang[dffzhengchang['a1_p'] > 0 ]
         print "zhangting beiza liebiao......", len(dffbeiza)
-        dffbeiza.to_sql('rtBeiZa', engine, index=False, if_exists='append')
+        dffbeiza.to_sql('rtBeiZa', engine, index=False, if_exists='replace')
 
     else:
         continue
