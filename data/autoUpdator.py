@@ -9,7 +9,7 @@ cur = conn.cursor()
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
 
-print "updating basics..."
+print "updating basics...   "
 ########## updating basics
 sql = "SELECT distinct code, name FROM `stockBasics`"
 dfOld = pd.read_sql(sql, conn)

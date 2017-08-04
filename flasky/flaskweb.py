@@ -146,6 +146,7 @@ def yizijson():
 def beizajson():
 
     c = conn.cursor()
+#    sql = "select y.code, y.name, round(y.zf,2), s.cbTime from rtBeiZa as y left join rtChubanTime as s on y.code = s.code order by y.zf"
     sql = "select y.code, y.name, round(y.zf,2), s.industry from rtBeiZa as y left join stockBasics as s on y.code = s.code order by y.zf"
     c.execute(sql)
  #   c.execute("select code, name, round(zf,2) from rtBeiZa where 1")
@@ -175,7 +176,10 @@ def beizajson():
 def zhengchangjson():
 
     c = conn.cursor()
-    c.execute("select l.code, l.name, r.industry from rtZhengChang as l left join stockBasics as r on l.code=r.code ")
+#    sql = "select l.code, l.name, r.cbTime from rtZhengChang as l left join rtChubanTime as r on l.code=r.code order by r.cbTime desc "
+    sql = "select l.code, l.name, r.industry from rtZhengChang as l left join stockBasics as r on l.code=r.code "
+
+    c.execute(sql)
     v = c.fetchall()
     conn.commit()
     c.close()
