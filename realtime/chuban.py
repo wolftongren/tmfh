@@ -1,4 +1,4 @@
-# coding=utf-8
+#coding=utf-8
 
 import tushare as ts
 import pandas as pd
@@ -18,7 +18,7 @@ t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
 
-dfChuban = pd.DataFrame(columns=['code', 'name', 'cbTime'])
+dfChuban = pd.DataFrame(columns=['code', 'name', 'cbTime', 'isBeiza'])
 dfBeiza = pd.DataFrame(columns=['code', 'name', 'bzTime', 'zf' 'a1_p'])
 
 while True:
@@ -62,9 +62,7 @@ while True:
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
 
         dfMonitor = dff[dff['chuban'] > 1.099]
-
-        #        dfMonitor = dfMonitor[dfMonitor['high'] != dfMonitor['low']]
-        #        dfBeiza = dfMonitor[dfMonitor['zhangfu'] < 1.099]
+        dfBeiza = dfMonitor[dfMonitor['zhangfu'] < 1.099]
 
         for i in range(0, len(dfMonitor)):
             code = dfMonitor.iloc[i]['code']
@@ -81,34 +79,27 @@ while True:
             if len(dfff):  # already in the chuban list
                 pass
             else:  # first time chuban
-                s = pd.Series(index=['code', 'name', 'cbTime'])
+                s = pd.Series(index=['code', 'name', 'cbTime', 'isBeiza'])
                 s[['code']] = s[['code']].astype(str)
 
                 s['code'] = code
                 s['name'] = name
                 s['cbTime'] = time
+                s['isBeiza'] = 0
                 dfChuban = dfChuban.append(s, ignore_index=True)
-
-            dfff = dfBeiza[dfBeiza['code'] == code]
-            if len(dfff):  # already in the beiza list
-                if (a1_p==0.00):
-                    dfBeiza = dfBeiza[dfBeiza['code'] != code]
-            else:  # first time beiza
-                if (a1_p!=0.00):
-                    s = pd.Series(index=['code', 'name', 'bzTime'])
-                    s[['code']] = s[['code']].astype(str)
-
-                    s['code'] = code
-                    s['name'] = name
-                    s['bzTime'] = time
-                    s['zf'] = zf
-                    s['a1_p'] = a1_p
-                    dfBeiza = dfBeiza.append(s, ignore_index=True)
-
         print "chuban: "
         print dfChuban
         dfChuban.to_sql('rtChubanTime', engine, index=False, if_exists='replace')
 
-        print "beiza: "
-        print dfBeiza
-        dfBeiza.to_sql('rtBeizaTime', engine, index=False, if_exists='replace')
+        # update how many stocks BeiZa
+        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
+        c = conn.cursor()
+        for i in range(0, len(dfBeiza)):
+            code = dfBeiza.iloc[i]['code']
+            sql = "update rtChubanTime set isBeiza = 1 where code = %s"
+            c.execute(sql, code)
+        conn.commit()
+        c.close()
+
+
+

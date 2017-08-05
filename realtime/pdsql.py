@@ -1,14 +1,22 @@
 import pandas as pd
 import numpy as np
+import pymysql
+import time
 
-df1 = pd.DataFrame([1,2,3,4], columns=list('ABCD'))
-df2 = pd.DataFrame([1,2,3,4],columns=list('ABCD'))
+while True:
 
-print df1
+    print "sleeping 5s..."
+    time.sleep(5)
 
-print df2
+    print "after sleep."
+    conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
 
-df = pd.merge([df1, df2])
 
-print df
+    c = conn.cursor()
+    for i in range(0, 1):
+        code = '000525'
+        sql = "update rtChubanTime set isBeiza = 1 where code = %s"
+        c.execute(sql, code)
+    conn.commit()
+    c.close()
 
