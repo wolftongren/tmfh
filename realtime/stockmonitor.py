@@ -24,7 +24,7 @@ t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
 
-dfChubanTime = pd.DataFrame(columns=['code', 'name', 'cbTime', 'isBeiza'])
+dfChubanTime = pd.DataFrame(columns=['date', 'code', 'name', 'cbTime', 'isBeiza'])
 
 
 while True:
@@ -139,6 +139,7 @@ while True:
             code = dfMonitor.iloc[i]['code']
             name = dfMonitor.iloc[i]['name']
             zf = dfMonitor.iloc[i]['zf']
+            d = dfMonitor.iloc[i]['date']
             t = dfMonitor.iloc[i]['time']
             high = dfMonitor.iloc[i]['high']
             low = dfMonitor.iloc[i]['low']
@@ -150,9 +151,10 @@ while True:
             if len(dfff):  # already in the chuban list
                 pass
             else:  # first time chuban
-                s = pd.Series(index=['code', 'name', 'cbTime', 'isBeiza'])
+                s = pd.Series(index=['date', 'code', 'name', 'cbTime', 'isBeiza'])
                 s[['code']] = s[['code']].astype(str)
-
+                
+                s['date'] = d
                 s['code'] = code
                 s['name'] = name
                 s['cbTime'] = t
