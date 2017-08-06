@@ -8,6 +8,7 @@ import datetime
 from sqlalchemy import create_engine
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
+
 sql = "SELECT distinct code, name FROM `stockBasics`"
 dfstocks = pd.read_sql(sql, conn)
 
@@ -17,6 +18,11 @@ dfZhangtingHistory1317 = pd.read_sql(sql, conn)
 sql = "select * from `histZhangtingStock2017`"
 dfZhangtingHistory2017 = pd.read_sql(sql, conn)
 
+d = datetime.datetime.now().date()
+sql = "select * from `rtChubanTime` where date = '%s'" % d
+dfChubanTime = pd.read_sql(sql, conn)
+print len(dfChubanTime)
+
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
 t930 = datetime.time(hour=9, minute=30, second=0)
@@ -24,16 +30,16 @@ t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
 
-dfChubanTime = pd.DataFrame(columns=['date', 'code', 'name', 'cbTime', 'isBeiza'])
+#dfChubanTime = pd.DataFrame(columns=['date', 'code', 'name', 'cbTime', 'isBeiza'])
 
 
 while True:
 
-    d = datetime.datetime.now().date()
-    t = datetime.datetime.now().time()
-
     print "sleeping 5s.."
     time.sleep(5)
+
+    d = datetime.datetime.now().date()
+    t = datetime.datetime.now().time()
 
     if (t > t930 and t < t1130) or (t > t1300 and t > t1500):
 
@@ -72,6 +78,8 @@ while True:
         shangzhang = len(dff[dff['zhangfu'] > 1])
         xiadie = len(dff[dff['zhangfu'] < 1])
         pingpan = len(dff[dff['zhangfu'] == 1])
+        if not conn:
+            conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
         sql = "insert into rtZhangDiePing(date, time, shangzhang, xiadie, pingpan) values (%s, %s, %s, %s, %s)"
         c = conn.cursor()
         c.execute(sql, (d, t, shangzhang, xiadie, pingpan))
@@ -138,14 +146,14 @@ while True:
         for i in range(0, len(dfMonitor)):
             code = dfMonitor.iloc[i]['code']
             name = dfMonitor.iloc[i]['name']
-            zf = dfMonitor.iloc[i]['zf']
+            #zf = dfMonitor.iloc[i]['zf']
             d = dfMonitor.iloc[i]['date']
             t = dfMonitor.iloc[i]['time']
-            high = dfMonitor.iloc[i]['high']
-            low = dfMonitor.iloc[i]['low']
-            chuban = dfMonitor.iloc[i]['chuban']
-            zhangfu = dfMonitor.iloc[i]['zhangfu']
-            a1_p = dfMonitor.iloc[i]['a1_p']
+            #high = dfMonitor.iloc[i]['high']
+            #low = dfMonitor.iloc[i]['low']
+            #chuban = dfMonitor.iloc[i]['chuban']
+            #zhangfu = dfMonitor.iloc[i]['zhangfu']
+            #a1_p = dfMonitor.iloc[i]['a1_p']
 
             dfff = dfChubanTime[dfChubanTime['code'] == code]
             if len(dfff):  # already in the chuban list
@@ -153,19 +161,30 @@ while True:
             else:  # first time chuban
                 s = pd.Series(index=['date', 'code', 'name', 'cbTime', 'isBeiza'])
                 s[['code']] = s[['code']].astype(str)
-                
+
                 s['date'] = d
                 s['code'] = code
                 s['name'] = name
                 s['cbTime'] = t
                 s['isBeiza'] = 0
                 dfChubanTime = dfChubanTime.append(s, ignore_index=True)
+
+                if not conn:
+                    conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab',
+                                           charset='utf8')
+                sql = "insert into rtChubanTime(date, code, name, cbTime, isBeiza) values (%s, %s, %s, %s, %s)"
+                c = conn.cursor()
+                c.execute(sql, (d, code, name, t, 0))
+                conn.commit()
+                c.close()
+
 #        print "chuban: "
 #        print dfChubanTime
-        dfChubanTime.to_sql('rtChubanTime', engine, index=False, if_exists='replace')
+#        dfChubanTime.to_sql('rtChubanTime', engine, index=False, if_exists='replace')
 
         # update how many stocks BeiZa
-        conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
+        if not conn:
+            conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
         c = conn.cursor()
         for i in range(0, len(dfBeiza)):
             code = dfBeiza.iloc[i]['code']

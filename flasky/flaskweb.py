@@ -63,7 +63,6 @@ def dabantishijson():
         i=1
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
@@ -149,7 +148,6 @@ def beizajson():
         i=1
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
