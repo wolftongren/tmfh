@@ -7,22 +7,9 @@ import tushare as ts
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
 
-while True:
-    time.sleep(10)
 
-    if not conn:
-        print "connetion is broken"
-
-    else:
-        print datetime.datetime.now(), "connection is OK"
-
-'''
-
-  
 d = datetime.datetime.now().date()
-#d = "'2017-08-04'"
-sql = "select * from rtChubanTime where date = '%s'" % d
+sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by l.zf" % d
 print sql
 dfChubanTime = pd.read_sql(sql, conn)
 print (dfChubanTime)
-'''

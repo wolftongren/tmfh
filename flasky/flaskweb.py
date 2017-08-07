@@ -137,8 +137,8 @@ def yizijson():
 def beizajson():
 
     c = conn.cursor()
-#    sql = "select y.code, y.name, round(y.zf,2), s.industry from rtBeiZa as y left join stockBasics as s on y.code = s.code order by y.zf"
-    sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where a1_p != 0 order by l.zf"
+    d = datetime.datetime.now().date()
+    sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by l.zf" % d
     c.execute(sql)
     v = c.fetchall()
     conn.commit()
@@ -166,8 +166,8 @@ def beizajson():
 def zhengchangjson():
 
     c = conn.cursor()
-#    sql = "select l.code, l.name, r.industry from rtZhengChang as l left join stockBasics as r on l.code=r.code "
-    sql = "select l.code, l.name, r.industry, x.cbTime, x.isBeiza from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where a1_p = 0 and low != high and zhangfu < 1.4 order by x.cbTime"
+    d = datetime.datetime.now().date()
+    sql = "select l.code, l.name, r.industry, x.cbTime, x.isBeiza from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p = 0 and low != high and zhangfu < 1.4 order by x.cbTime" % d
     c.execute(sql)
     v = c.fetchall()
     conn.commit()
