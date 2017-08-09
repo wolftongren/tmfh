@@ -97,6 +97,9 @@ function setBeizaTable() {
         }, {
             field: 'industry',
             title: 'industry'
+        }, {
+            field: 'cbTime',
+            title: 'cbTime'
         }
         ]
     });
@@ -120,6 +123,12 @@ function setZhengchangTable() {
         }, {
             field: 'industry',
             title: 'industry'
+        }, {
+            field: 'cbTime',
+            title: 'cbTime'
+        }, {
+            field: 'isBeiza',
+            title: 'isBeiza'
         }
         ]
     });

@@ -63,7 +63,6 @@ def dabantishijson():
         i=1
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
@@ -89,8 +88,6 @@ def dabantishijson():
 
 @app.route('/chubanjson', methods=['GET'])
 def zhangtingjson():
-    # data = [{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}, {"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"},{"code":"603525", "name":"xxxxxx", "pchange":"8.77", "a1_b":"222"}]
-    # return json.dumps(data)
 
     c = conn.cursor()
     c.execute("select code, name, zf, a1_v from rtChuBan where 1")
@@ -101,13 +98,10 @@ def zhangtingjson():
         jsonData = []
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
-
             result['code'] = row[0]
             result['name'] = row[1]
             result['pchange'] = row[2]
             result['a1_b'] = row[3]
-
             jsonData.append(result)
 
         return json.dumps(jsonData)
@@ -116,8 +110,8 @@ def zhangtingjson():
 @app.route('/yizijson', methods=['GET'])
 def yizijson():
 
-    sql = "select y.code, y.name, b.timeToMarket from stockBasics as b right join rtYiZi as y on y.code = b.code order by b.timeToMarket desc"
-#   sql = "select y.code, y.name from rtYiZi as y where 1"
+#    sql = "select y.code, y.name, b.timeToMarket from stockBasics as b right join rtYiZi as y on y.code = b.code order by b.timeToMarket desc"
+    sql = "select l.code, l.name, r.timeTomarket from rtChuBan as l left join stockBasics as r on l.code=r.code where low = high or zhangfu > 1.4 order by r.timeToMarket desc"
     c = conn.cursor()
     c.execute(sql)
 
@@ -129,7 +123,6 @@ def yizijson():
         i = 1
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
@@ -137,8 +130,6 @@ def yizijson():
 
             i=i+1
             jsonData.append(result)
-
- #       print "yizijson: ", i, jsonData
         return json.dumps(jsonData)
 
 
@@ -146,10 +137,9 @@ def yizijson():
 def beizajson():
 
     c = conn.cursor()
-#    sql = "select y.code, y.name, round(y.zf,2), s.cbTime from rtBeiZa as y left join rtChubanTime as s on y.code = s.code order by y.zf"
-    sql = "select y.code, y.name, round(y.zf,2), s.industry from rtBeiZa as y left join stockBasics as s on y.code = s.code order by y.zf"
+    d = datetime.datetime.now().date()
+    sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by l.zf" % d
     c.execute(sql)
- #   c.execute("select code, name, round(zf,2) from rtBeiZa where 1")
     v = c.fetchall()
     conn.commit()
     c.close()
@@ -158,12 +148,12 @@ def beizajson():
         i=1
         for row in v:
             result = {}
-            # print "row[0]: ", row[0]
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
             result['zf'] = row[2]
             result['industry'] = row[3]
+            result['cbTime'] = row[4]
 
             i=i+1
             jsonData.append(result)
@@ -176,9 +166,8 @@ def beizajson():
 def zhengchangjson():
 
     c = conn.cursor()
-#    sql = "select l.code, l.name, r.cbTime from rtZhengChang as l left join rtChubanTime as r on l.code=r.code order by r.cbTime desc "
-    sql = "select l.code, l.name, r.industry from rtZhengChang as l left join stockBasics as r on l.code=r.code "
-
+    d = datetime.datetime.now().date()
+    sql = "select l.code, l.name, r.industry, x.cbTime, x.isBeiza from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p = 0 and low != high and zhangfu < 1.4 order by x.cbTime" % d
     c.execute(sql)
     v = c.fetchall()
     conn.commit()
@@ -188,17 +177,14 @@ def zhengchangjson():
         i=1
         for row in v:
             result = {}
-
             result['id']=i
             result['code'] = row[0]
             result['name'] = row[1]
             result['industry'] = row[2]
-
-
+            result['cbTime'] = row[3]
+            result['isBeiza'] = row[4]
             i=i+1
             jsonData.append(result)
-
-#        print "zhengchangjson: ", i, jsonData
         return json.dumps(jsonData)
 
 
