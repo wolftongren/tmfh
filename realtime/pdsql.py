@@ -1,3 +1,6 @@
+#coding=utf-8
+
+
 import pandas as pd
 import numpy as np
 import pymysql
@@ -7,9 +10,20 @@ import tushare as ts
 
 conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab', charset='utf8')
 
+sql = "select code from stockBasics where industry like '铝' "
+dfstocks = pd.read_sql(sql, conn)
 
-d = datetime.datetime.now().date()
-sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by l.zf" % d
-print sql
-dfChubanTime = pd.read_sql(sql, conn)
-print (dfChubanTime)
+while True:
+
+    time.sleep(5)
+
+    dff = ts.get_realtime_quotes(dfstocks['code'])
+
+    dff['zhangfu'] = 0.0
+    dff[['price']] = dff[['price']].astype(float)
+    dff[['pre_close']] = dff[['pre_close']].astype(float)
+    dff['zhangfu'] = (dff['price'] / dff['pre_close'] - 1 ) * 100
+
+    print dff[['code', 'name', 'zhangfu']]
+
+
