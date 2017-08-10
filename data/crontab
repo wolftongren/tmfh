@@ -1,6 +1,2 @@
-
 00 09 * * 1-5 python /home/tongren/stocklab/realtime/initDB.py >> /home/tongren/stocklab/logs/initDB.log 2>&1
-
-25 09 * * 1-5 python /home/tongren/stocklab/realtime/stockMonitor.py >> /home/tongren/stocklab/logs/stockMonitor.log 2>&1
-
-00 21 * * 1-5 python /home/tongren/stocklab/data/autoUpdator.py >> /home/tongren/stocklab/logs/autoUpdator.log 2>&1
+00 22 * * 1-5 python /home/tongren/stocklab/data/autoUpdator.py >> /home/tongren/stocklab/logs/autoUpdator.log 2>&1
