@@ -138,7 +138,7 @@ def beizajson():
 
     c = conn.cursor()
     d = datetime.datetime.now().date()
-    sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by l.zf" % d
+    sql = "select l.code, l.name, round(l.zf, 2), r.industry, x.cbTime from rtChuBan as l left join stockBasics as r on l.code=r.code left join rtChubanTime as x on x.code = l.code where x.date = '%s' and a1_p != 0 order by x.cbTime" % d
     c.execute(sql)
     v = c.fetchall()
     conn.commit()
