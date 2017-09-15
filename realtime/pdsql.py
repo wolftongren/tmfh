@@ -13,6 +13,10 @@ conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr'
 sql = "select code from stockBasics where industry like '铝' "
 dfstocks = pd.read_sql(sql, conn)
 
+d = datetime.datetime.now().date()
+t = datetime.datetime.now().time()
+print d, t, "running initDB.py"
+
 while True:
 
     time.sleep(5)
