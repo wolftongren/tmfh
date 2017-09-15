@@ -14,7 +14,7 @@ $(document).ready(function () {
             text: 'Stock Market Status Monitor'
         },
         xAxis: {
-            categories: ['shangzhang', 'xiadie', 'pingpan'],
+            categories: ['zhang', 'die', 'ping'],
             labels: {
                 align: 'center'
             }

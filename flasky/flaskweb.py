@@ -41,8 +41,18 @@ def getnew():
 
 
 @app.route('/mon')
-def index():
-    return render_template('mon.html', data=json.dumps([1, 1, 1]))
+def mon():
+    return render_template('mon.html')
+
+@app.route('/monjson')
+def monjson():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
+    v = c.fetchone()
+    conn.commit()
+    c.close()
+    return json.dumps([['zhang', v[0]],['die', v[1]], ['ping', v[2]]])
 
 
 @app.route('/zhangting')
@@ -190,4 +200,4 @@ def zhengchangjson():
 
 
 
-app.run(host='0.0.0.0', port=8888, debug=True)
+app.run(host='0.0.0.0', port=9999, debug=True)
