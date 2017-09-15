@@ -9,6 +9,7 @@ cur = conn.cursor()
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
 ########## updating basics
+print datetime.datetime.now().time()
 print "updating basics...   "
 sql = "SELECT distinct code, name FROM `stockBasics`"
 dfOld = pd.read_sql(sql, conn)
@@ -34,10 +35,10 @@ print todayDate
 
 dfResult = pd.DataFrame()
 for i in range(0, len(df)):
-    print i, df['code'][i]
+#    print i, df['code'][i]
     dfStock = ts.get_hist_data(df['code'][i], start=todayDate, end=todayDate)
     if dfStock is None:
-        print "pass..."
+#        print "pass..."
         pass
     else:
         dfStock.reset_index(inplace=True)
@@ -47,6 +48,9 @@ for i in range(0, len(df)):
 
 print "writing to stockData2017..."
 dfResult.to_sql('stockData2017', engine, index=False, if_exists='append')
+print "Writing finished, len: ", len(dfResult)
+print datetime.datetime.now().time()
+print ""
 
 cur.close()
 conn.close()
