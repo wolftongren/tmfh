@@ -92,14 +92,14 @@ function setBeizaTable() {
             field: 'name',
             title: 'name'
         }, {
-            field: 'zf',
-            title: 'zf'
-        }, {
             field: 'industry',
             title: 'industry'
         }, {
             field: 'cbTime',
             title: 'cbTime'
+        }, {
+            field: 'zf',
+            title: 'zf'
         }
         ]
     });

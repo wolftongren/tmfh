@@ -41,6 +41,10 @@ while True:
     d = datetime.datetime.now().date()
     t = datetime.datetime.now().time()
 
+    if t > t1500:
+        print "stock is over, exit..."
+        break
+
     if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
 
         print "fetching data...", datetime.datetime.now()
@@ -193,8 +197,6 @@ while True:
         conn.commit()
         c.close()
 
-    else:
-        continue
 
 
 
