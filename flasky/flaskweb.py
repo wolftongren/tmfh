@@ -58,7 +58,21 @@ def zhangdiefive():
     top = [3, 20, 869, 1258, 69, 21];
     return json.dumps(top)
 
+@app.route('/zhangdieten', methods=['GET'])
+def zhangdieten():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
+    v = c.fetchone()
+    conn.commit()
+    c.close()
+    if (v != None):
+        top = [v[0], v[1], v[2]]
+    else:
+        top = [7, 2, 9, 24, 12, 21, 222, 125, 332, 543, 645, 222, 342, 122, 87, 67, 23, 12, 5, 32];
 
+    top = [7, 2, 9, 24, 12, 21, 222, 125, 332, 543, 645, 222, 342, 122, 87, 67, 23, 12, 5, 32];
+    return json.dumps(top)
 
 
 @app.route('/mon')

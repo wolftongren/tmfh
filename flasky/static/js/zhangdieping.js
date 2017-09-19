@@ -13,7 +13,7 @@ $(document).ready(function () {
             }
         },
         title: {
-            text: 'zhang, die, ping'
+            text: 'main view'
         },
         yAxis: {
             title: {
@@ -83,15 +83,49 @@ $(document).ready(function () {
                 colorByPoint: true,
                 colors: ['green','green','green','red','red','red'],
                 dataLabels: {
-                    enabled: true,
-                    formatter: function () {
-                        v = 0;
-                        for (i in dataFive) {
-                            v += dataFive[i];
-                        }
-                        a = this.y / v * 100;
-                        return a.toFixed(2) + "%";
-                    }
+                    enabled: true
+
+                }
+            }
+        },
+        series: [{
+            name: 'overview',
+            type: 'column'
+        }]
+
+    });
+
+    tenChart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'tencolchart',
+            events: {
+                load: st
+            }
+        },
+        title: {
+            text: '1% view'
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+        xAxis: {
+            categories: ['<-9', '-9-8', '-8-7','-7-6','-6-5','-5-4','-4-3','-3-2','-2-1','-1-0','0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9','>9'],
+            labels: {
+                align: 'center'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                colorByPoint: true,
+                colors: ['green','green','green','green','green','green','green','green','green','green','red','red','red','red','red','red','red','red','red','red'],
+                dataLabels: {
+                    enabled: true
+
                 }
             }
         },
@@ -138,11 +172,11 @@ function getTenData() {
 
     $.ajax({
         type: "get",
-        url: "/zhangdie",
+        url: "/zhangdieten",
         dataType: "json",
         success: function (datax) {
             data2 = datax;
-            zdpChart.series[0].setData(datax);
+            tenChart.series[0].setData(datax);
         }
     });
 }
