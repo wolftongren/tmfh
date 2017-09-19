@@ -25,8 +25,8 @@ def hello():
     return render_template('main.html', data=json.dumps(ones))
 
 
-@app.route('/zhangdie', methods=['GET'])
-def getnew():
+@app.route('/zhangdieping', methods=['GET'])
+def zhangdieping():
     d = datetime.datetime.now().date()
     c = conn.cursor()
     c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
@@ -37,7 +37,28 @@ def getnew():
         top = [v[0], v[1], v[2]]
     else:
         top = [0, 0, 0]
+    top = [889, 2018, 96]
     return json.dumps(top)
+
+
+@app.route('/zhangdiefive', methods=['GET'])
+def zhangdiefive():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
+    v = c.fetchone()
+    conn.commit()
+    c.close()
+    if (v != None):
+        top = [v[0], v[1], v[2]]
+    else:
+        top = [3, 20, 869, 1258, 69, 21];
+
+
+    top = [3, 20, 869, 1258, 69, 21];
+    return json.dumps(top)
+
+
 
 
 @app.route('/mon')
@@ -52,7 +73,16 @@ def monjson():
     v = c.fetchone()
     conn.commit()
     c.close()
-    return json.dumps([['zhang', v[0]],['die', v[1]], ['ping', v[2]]])
+    if (v != None):
+        return json.dumps([['zhang', v[0]], ['die', v[1]], ['ping', v[2]]])
+    else:
+        return json.dumps([['zhang', 1], ['die', 1], ['ping', 1]])
+
+
+@app.route('/monsplinejson')
+def monsplinejson():
+    return json.dumps([6,7,5,4,3,4,5,6,6,7,8,9,38,26,18,22,9,5])
+
 
 
 @app.route('/zhangting')

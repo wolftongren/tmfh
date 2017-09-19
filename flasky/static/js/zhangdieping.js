@@ -1,17 +1,24 @@
 var chart;
-var data2;
+var dataZdp;
+var dataFive;
+var dataTen;
 
 $(document).ready(function () {
 
-    chart = new Highcharts.Chart({
+    zdpChart = new Highcharts.Chart({
         chart: {
-            renderTo: 'columnchart',
+            renderTo: 'zdpcolchart',
             events: {
                 load: st
             }
         },
         title: {
-            text: 'Stock Market Status Monitor'
+            text: 'zhang, die, ping'
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
         },
         xAxis: {
             categories: ['zhang', 'die', 'ping'],
@@ -19,12 +26,9 @@ $(document).ready(function () {
                 align: 'center'
             }
         },
-        yAxis: {
-            title: {
-                text: 'No. of stocks'
-            }
+        credits: {
+            enabled: false
         },
-
         plotOptions: {
             column: {
                 colorByPoint: true,
@@ -33,8 +37,8 @@ $(document).ready(function () {
                     enabled: true,
                     formatter: function () {
                         v = 0;
-                        for (i in data2) {
-                            v += data2[i];
+                        for (i in dataZdp) {
+                            v += dataZdp[i];
                         }
                         a = this.y / v * 100;
                         return a.toFixed(2) + "%";
@@ -42,20 +46,95 @@ $(document).ready(function () {
                 }
             }
         },
-
         series: [{
-            name: 'zhangdie distribution',
-            data: data2,
+            name: 'overview',
             type: 'column'
         }]
 
     });
 
-    getData();
+
+    fiveChart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'fivecolchart',
+            events: {
+                load: st
+            }
+        },
+        title: {
+            text: '5% view'
+        },
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+        xAxis: {
+            categories: ['<-5', '-5-1', '-1-0','0-1','1-5','>5'],
+            labels: {
+                align: 'center'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                colorByPoint: true,
+                colors: ['green','green','green','red','red','red'],
+                dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        v = 0;
+                        for (i in dataFive) {
+                            v += dataFive[i];
+                        }
+                        a = this.y / v * 100;
+                        return a.toFixed(2) + "%";
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'overview',
+            type: 'column'
+        }]
+
+    });
+
+    getZdpData();
+    getFiveData();
+    getTenData();
 });
 
 
-function getData() {
+function getZdpData() {
+
+    $.ajax({
+        type: "get",
+        url: "/zhangdieping",
+        dataType: "json",
+        success: function (datax) {
+            dataZdp = datax;
+            zdpChart.series[0].setData(datax);
+        }
+    });
+}
+
+function getFiveData() {
+
+    $.ajax({
+        type: "get",
+        url: "/zhangdiefive",
+        dataType: "json",
+        success: function (datax) {
+            dataFive = datax;
+            fiveChart.series[0].setData(datax);
+        }
+    });
+}
+
+function getTenData() {
 
     $.ajax({
         type: "get",
@@ -63,11 +142,14 @@ function getData() {
         dataType: "json",
         success: function (datax) {
             data2 = datax;
-            chart.series[0].setData(datax);
+            zdpChart.series[0].setData(datax);
         }
     });
 }
 
 function st() {
-    setInterval("getData()", 5000);
+    setInterval("getZdpData()", 5000);
+    setInterval("getFiveData()", 5000);
+    setInterval("getTenData()", 5000);
+
 }
