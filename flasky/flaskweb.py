@@ -29,7 +29,7 @@ def hello():
 def zhangdieping():
     d = datetime.datetime.now().date()
     c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
+    c.execute('select xiadie, pingpan, shangzhang from rtZhangDiePing where date = %s order by time desc limit 1', d)
     v = c.fetchone()
     conn.commit()
     c.close()
@@ -37,7 +37,7 @@ def zhangdieping():
         top = [v[0], v[1], v[2]]
     else:
         top = [0, 0, 0]
-    top = [889, 2018, 96]
+    top = [2018, 96, 889]
     return json.dumps(top)
 
 

@@ -57,6 +57,9 @@ while True:
                 dfResult = dfResult.append(df)
 
         dff = dfResult.copy()
+        
+        dff = dff[dff['volume']>'0']
+
 
         dff['zhangfu'] = 0.0
         dff['chuban'] = 0.0
@@ -64,19 +67,53 @@ while True:
         dff['rtime']= datetime.datetime.now().strftime("%H:%M:%S")
 
 
-        dff = dff[dff['volume']>'0']
 
         dff[['price']] = dff[['price']].astype(float)
         dff[['pre_close']] = dff[['pre_close']].astype(float)
+        dff[['open']] = dff[['open']].astype(float)
         dff[['high']] = dff[['high']].astype(float)
         dff[['low']] = dff[['low']].astype(float)
         dff[['zf']] = dff[['zf']].astype(float)
         dff[['a1_p']] = dff[['a1_p']].astype(float)
-        dff[['open']] = dff[['open']].astype(float)
 
         dff['zhangfu'] =  dff['price'] / dff['pre_close']
         dff['chuban'] = dff['high'] / dff['pre_close']
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
+        
+####################zhang die fu 1%######################
+        
+        fxy9 = len(dff[dff['zf'] < -9])
+        fxy8 = len(dff[dff['zf'] < -8])
+        fxy7 = len(dff[dff['zf'] < -7])
+        fxy6 = len(dff[dff['zf'] < -6])
+        fxy5 = len(dff[dff['zf'] < -5])
+        fxy4 = len(dff[dff['zf'] < -4])
+        fxy3 = len(dff[dff['zf'] < -3])
+        fxy2 = len(dff[dff['zf'] < -2])
+        fxy1 = len(dff[dff['zf'] < -1])
+        fxy0 = len(dff[dff['zf'] < -0])
+        fz00 = len(dff[dff['zf'] == 0])
+        zdy0 = len(dff[dff['zf'] > 0])
+        zdy1 = len(dff[dff['zf'] > 1])
+        zdy2 = len(dff[dff['zf'] > 2])
+        zdy3 = len(dff[dff['zf'] > 3])
+        zdy4 = len(dff[dff['zf'] > 4])
+        zdy5 = len(dff[dff['zf'] > 5])
+        zdy6 = len(dff[dff['zf'] > 6])
+        zdy7 = len(dff[dff['zf'] > 7])
+        zdy8 = len(dff[dff['zf'] > 8])
+        zdy9 = len(dff[dff['zf'] > 9])
+
+        if not conn:
+            conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab',
+                                   charset='utf8')
+        sql = "insert into rtZhangDieFu(date, time, fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9) values (%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
+        c = conn.cursor()
+        c.execute(sql, (d, t, fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9))
+        conn.commit()
+        c.close()
+        
+'''
 
 ##########################Zhang Die Ping##############################
         shangzhang = len(dff[dff['zhangfu'] > 1])
@@ -196,6 +233,7 @@ while True:
             c.execute(sql, code)
         conn.commit()
         c.close()
+'''
 
 
 

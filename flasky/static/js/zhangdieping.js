@@ -21,7 +21,7 @@ $(document).ready(function () {
             }
         },
         xAxis: {
-            categories: ['zhang', 'die', 'ping'],
+            categories: ['die', 'ping', 'zhang'],
             labels: {
                 align: 'center'
             }
@@ -32,7 +32,7 @@ $(document).ready(function () {
         plotOptions: {
             column: {
                 colorByPoint: true,
-                colors: ['red', 'green', 'grey'],
+                colors: ['green', 'grey', 'red'],
                 dataLabels: {
                     enabled: true,
                     formatter: function () {
@@ -70,7 +70,7 @@ $(document).ready(function () {
             }
         },
         xAxis: {
-            categories: ['<-5', '-5-1', '-1-0','0-1','1-5','>5'],
+            categories: ['<-8', '-8-3', '-3-0','0-3','3-8','>8'],
             labels: {
                 align: 'center'
             }
