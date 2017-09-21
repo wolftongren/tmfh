@@ -1,7 +1,5 @@
-var chart;
 var dataZdp;
-var dataFive;
-var dataTen;
+
 
 $(document).ready(function () {
 
@@ -21,7 +19,7 @@ $(document).ready(function () {
             }
         },
         xAxis: {
-            categories: ['die', 'ping', 'zhang'],
+            categories: ['die', 'zhang', 'ping'],
             labels: {
                 align: 'center'
             }
@@ -32,13 +30,13 @@ $(document).ready(function () {
         plotOptions: {
             column: {
                 colorByPoint: true,
-                colors: ['green', 'grey', 'red'],
+                colors: ['green', 'red', 'grey'],
                 dataLabels: {
                     enabled: true,
                     formatter: function () {
                         v = 0;
                         for (i in dataZdp) {
-                            v += dataZdp[i].y;
+                            v += dataZdp[i];
                         }
                         a = this.y / v * 100;
                         return a.toFixed(2) + "%";
@@ -136,54 +134,11 @@ $(document).ready(function () {
 
     });
 
-    getZdpData();
-    getFiveData();
-    getTenData();
+    getZdfData();
+
 });
 
 
-function getTenData() {
-
-    $.ajax({
-        type: "get",
-        url: "/zhangdieping",
-        dataType: "json",
-        success: function (datax) {
-            dataZdp = datax;
-            zdpChart.series[0].setData(datax);
-        }
-    });
-}
-
-function getFiveData() {
-
-    $.ajax({
-        type: "get",
-        url: "/zhangdiefive",
-        dataType: "json",
-        success: function (datax) {
-            dataFive = datax;
-            fiveChart.series[0].setData(datax);
-        }
-    });
-}
-
-function getZdpData() {
-
-    $.ajax({
-        type: "get",
-        url: "/zhangdieten",
-        dataType: "json",
-        success: function (datax) {
-            dataZdp[0] = datax[11];
-            dataZdp[1] = datax[9];
-            dataZdp[2] = datax[10];
-            tenChart.series[0].setData(dataZdp);
-
-            dataFive[0] = 
-        }
-    });
-}
 
 function getZdfData() {
 
@@ -192,18 +147,48 @@ function getZdfData() {
         url: "/zhangdiefu",
         dataType: "json",
         success: function (datax) {
+            dataZdp = [0,0,0];
             dataZdp[0] = datax[9];
-            dataZdp[1] = datax[10];
-            dataZdp[2] = datax[11];
+            dataZdp[1] = datax[11];
+            dataZdp[2] = datax[10];
             zdpChart.series[0].setData(dataZdp);
+
+            var dataFive = [];
+            dataFive[0] = datax[1]; // <-8
+            dataFive[1] = datax[6]-datax[1]; // -8 ~ -3
+            dataFive[2] = datax[9]-datax[6]; // -3 ~ 0
+            dataFive[3] = datax[11]-datax[14]; // 0 ~ 3
+            dataFive[4] = datax[14]-datax[19]; // 3 ~ 8
+            dataFive[5] = datax[19]; // >8
+            fiveChart.series[0].setData(dataFive);
+
+            var dataTen = [];
+            dataTen[0] = datax[0]; //<-9
+            dataTen[1] = datax[1]-datax[0];//-9 ~ -8
+            dataTen[2] = datax[2]-datax[1];
+            dataTen[3] = datax[3]-datax[2];
+            dataTen[4] = datax[4]-datax[3];
+            dataTen[5] = datax[5]-datax[4];
+            dataTen[6] = datax[6]-datax[5];
+            dataTen[7] = datax[7]-datax[6];
+            dataTen[8] = datax[8]-datax[7];
+            dataTen[9] = datax[9]-datax[8];
+            dataTen[10] = datax[11]-datax[12];
+            dataTen[11] = datax[12]-datax[13];
+            dataTen[12] = datax[13]-datax[14];
+            dataTen[13] = datax[14]-datax[15];
+            dataTen[14] = datax[15]-datax[16];
+            dataTen[15] = datax[16]-datax[17];
+            dataTen[16] = datax[17]-datax[18];
+            dataTen[17] = datax[18]-datax[19];
+            dataTen[18] = datax[19]-datax[20];
+            dataTen[19] = datax[20];
+            tenChart.series[0].setData(dataTen);
         }
     });
 }
 
 function st() {
      setInterval("getZdfData()", 5000);
-//    setInterval("getZdpData()", 5000);
-//    setInterval("getFiveData()", 5000);
-//    setInterval("getTenData()", 5000);
 
 }
