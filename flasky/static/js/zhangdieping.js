@@ -38,7 +38,7 @@ $(document).ready(function () {
                     formatter: function () {
                         v = 0;
                         for (i in dataZdp) {
-                            v += dataZdp[i];
+                            v += dataZdp[i].y;
                         }
                         a = this.y / v * 100;
                         return a.toFixed(2) + "%";
@@ -142,7 +142,7 @@ $(document).ready(function () {
 });
 
 
-function getZdpData() {
+function getTenData() {
 
     $.ajax({
         type: "get",
@@ -168,22 +168,42 @@ function getFiveData() {
     });
 }
 
-function getTenData() {
+function getZdpData() {
 
     $.ajax({
         type: "get",
         url: "/zhangdieten",
         dataType: "json",
         success: function (datax) {
-            data2 = datax;
-            tenChart.series[0].setData(datax);
+            dataZdp[0] = datax[11];
+            dataZdp[1] = datax[9];
+            dataZdp[2] = datax[10];
+            tenChart.series[0].setData(dataZdp);
+
+            dataFive[0] = 
+        }
+    });
+}
+
+function getZdfData() {
+
+    $.ajax({
+        type: "get",
+        url: "/zhangdiefu",
+        dataType: "json",
+        success: function (datax) {
+            dataZdp[0] = datax[9];
+            dataZdp[1] = datax[10];
+            dataZdp[2] = datax[11];
+            zdpChart.series[0].setData(dataZdp);
         }
     });
 }
 
 function st() {
-    setInterval("getZdpData()", 5000);
-    setInterval("getFiveData()", 5000);
-    setInterval("getTenData()", 5000);
+     setInterval("getZdfData()", 5000);
+//    setInterval("getZdpData()", 5000);
+//    setInterval("getFiveData()", 5000);
+//    setInterval("getTenData()", 5000);
 
 }

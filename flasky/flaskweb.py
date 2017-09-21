@@ -25,6 +25,23 @@ def hello():
     return render_template('main.html', data=json.dumps(ones))
 
 
+@app.route('/zhangdiefu', methods=['GET'])
+def zhangdiepfu():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9 from rtZhangDieFu where date = %s order by time desc limit 1', d)
+    v = c.fetchone()
+    conn.commit()
+    c.close()
+    if (v != None):
+        top = [v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[11],v[12],v[13],v[14],v[15],v[16],v[17],v[18],v[19],v[20]]
+    else:
+        top = [0, 0, 0]
+
+    return json.dumps(top)
+
+
+
 @app.route('/zhangdieping', methods=['GET'])
 def zhangdieping():
     d = datetime.datetime.now().date()
