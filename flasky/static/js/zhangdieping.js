@@ -161,67 +161,32 @@ $(document).ready(function () {
                 step: 12
             }
         },
-        plogOptions: {
+        plotOptions: {
             spline:{
-                colors:['black', 'blue', 'red', 'green']
-                //pointInterval: 60, //one minute
-                //pointStart: Date.UTC(2017,9,16,9,30,0)
-
+                linewidth: 4,
+                states: {
+                    hover: {
+                        linewidth: 5
+                    }
+                },
+                marker: {
+                    enabled: false
+                }
             }
         },
         series: [{
             name: 'chuban',
-            color: 'black',
-            data: (function(){
-                var data=[],i;
-                for(i=1;i<=240;i++){
-                    data.push({
-                        x:i
-
-                    });
-                }
-                return data;
-            })()
+            color: 'black'
         },{
             name: 'yizi',
-            color: 'blue',
-            data: (function(){
-                var data=[],i;
-                for(i=1;i<=240;i++){
-                    data.push({
-                        x:i
-
-                    });
-                }
-                return data;
-            })()
+            color: 'blue'
         },{
             name: 'zhangting',
-            color: 'red',
-            data: (function(){
-                var data=[],i;
-                for(i=1;i<=240;i++){
-                    data.push({
-                        x:i
-
-                    });
-                }
-                return data;
-            })()
+            color: 'red'
         },{
             name: 'beiza',
-            color: 'green',
-            data: (function(){
-                var data=[],i;
-                for(i=1;i<=240;i++){
-                    data.push({
-                        x:i
-
-                    });
-                }
-                return data;
-            })()
-        }]
+            color: 'green'
+         }]
     });
 
     getZdfData();
@@ -286,7 +251,7 @@ function getSplineData() {
         dataType: "json",
         success: function (datax) {
             console.log(datax)
-            splinechart.series[0].setData(datax[0]);
+            //splinechart.series[0].setData(datax[0]);
             splinechart.series[1].setData(datax[1]);
             splinechart.series[2].setData(datax[2]);
             splinechart.series[3].setData(datax[3]);

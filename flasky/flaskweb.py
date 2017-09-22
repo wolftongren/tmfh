@@ -62,18 +62,14 @@ def monjson():
 @app.route('/monsplinejson')
 def monsplinejson():
 
-    format = "'%h:%i'"
     d = datetime.datetime.now().date()
     c = conn.cursor()
-    c.execute('select distinct time_format(time,%s) as tt, chuban, yizi, zhangting, beiza from rtZhangtingShu where date = %s order by tt', [format, d])
+    c.execute('select distinct time, chuban, yizi, zhangting, beiza from rtZhangtingShu where date = %s order by time', d)
     v = c.fetchall()
     conn.commit()
     c.close()
-    print len(v)
-
 
     if (v != None):
-        i = 0
         chuban = []
         yizi = []
         zhangting = []
@@ -83,7 +79,7 @@ def monsplinejson():
             yizi.append(row[2])
             zhangting.append(row[3])
             beiza.append(row[4])
-            i = i + 1
+        print v
         return json.dumps([chuban,yizi,zhangting,beiza])
     else:
         return json.dumps([[0],[0],[0],[0]])
