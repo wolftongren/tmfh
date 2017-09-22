@@ -135,7 +135,97 @@ $(document).ready(function () {
 
     });
 
+    splinechart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'splinechart2',
+            type: 'spline',
+            events: {
+                load: st
+            }
+        },
+        title: {
+            text: 'Zhangting Related Trends'
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'num'
+            }
+        },
+        xAxis: {
+            type: 'linear',
+            //categories: ['9:30', '9:31', '9:32','9:33','9:34','9:35','9:36','9:37','9:38','9:39'],
+            labels: {
+                step: 12
+            }
+        },
+        plogOptions: {
+            spline:{
+                colors:['black', 'blue', 'red', 'green']
+                //pointInterval: 60, //one minute
+                //pointStart: Date.UTC(2017,9,16,9,30,0)
+
+            }
+        },
+        series: [{
+            name: 'chuban',
+            color: 'black',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'yizi',
+            color: 'blue',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'zhangting',
+            color: 'red',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'beiza',
+            color: 'green',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        }]
+    });
+
     getZdfData();
+    getSplineData();
 
 });
 
@@ -189,7 +279,24 @@ function getZdfData() {
     });
 }
 
+function getSplineData() {
+    $.ajax({
+        type: "get",
+        url: "/monsplinejson",
+        dataType: "json",
+        success: function (datax) {
+            console.log(datax)
+            splinechart.series[0].setData(datax[0]);
+            splinechart.series[1].setData(datax[1]);
+            splinechart.series[2].setData(datax[2]);
+            splinechart.series[3].setData(datax[3]);
+
+        }
+    });
+}
+
 function st() {
      setInterval("getZdfData()", 5000);
+     setInterval("getSplineData()", 5000);
 
 }
