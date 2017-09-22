@@ -123,7 +123,43 @@ $(document).ready(function () {
             }
         },
         series: [{
-            name: 'zhangting shuliang',
+            name: 'chuban',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'yizi',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'zhangting',
+            data: (function(){
+                var data=[],i;
+                for(i=1;i<=240;i++){
+                    data.push({
+                        x:i
+
+                    });
+                }
+                return data;
+            })()
+        },{
+            name: 'beiza',
             data: (function(){
                 var data=[],i;
                 for(i=1;i<=240;i++){
@@ -173,7 +209,12 @@ function getSplineData() {
         url: "/monsplinejson",
         dataType: "json",
         success: function (datax) {
-            splinechart.series[0].setData(datax);
+            console.log(datax)
+            splinechart.series[0].setData(datax[0]);
+            splinechart.series[1].setData(datax[1]);
+            splinechart.series[2].setData(datax[2]);
+            splinechart.series[3].setData(datax[3]);
+
         }
     });
 }

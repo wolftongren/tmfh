@@ -113,6 +113,25 @@ while True:
         conn.commit()
         c.close()
         
+##############chuban, yizi, zhangting, beiza############
+
+        dfChuban = dff[dff['chuban']>1.099]
+        dfYizi = dfChuban[dfChuban['high']==dfChuban['low']]
+        dfNotYizi = dfChuban[dfChuban['high']!=dfChuban['low']]
+        dfZhangting = dfNotYizi[dfNotYizi['a1_p']==0]
+        dfBeiza = dfChuban[dfChuban['a1_p'] !=0]
+
+        chuban = len(dfChuban)
+        yizi = len(dfYizi)
+        zhangting = len(dfZhangting)
+        beiza = len(dfBeiza)
+
+        sql = "insert into rtZhangtingShu(date, time, chuban, yizi, zhangting, beiza ) values (%s, %s, %s, %s, %s, %s)"
+        c = conn.cursor()
+        c.execute(sql, (d, t,  chuban, yizi, zhangting, beiza))
+        conn.commit()
+        c.close()
+
 '''
 
 ##########################Zhang Die Ping##############################

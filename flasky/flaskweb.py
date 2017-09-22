@@ -41,57 +41,6 @@ def zhangdiepfu():
     return json.dumps(top)
 
 
-
-@app.route('/zhangdieping', methods=['GET'])
-def zhangdieping():
-    d = datetime.datetime.now().date()
-    c = conn.cursor()
-    c.execute('select xiadie, pingpan, shangzhang from rtZhangDiePing where date = %s order by time desc limit 1', d)
-    v = c.fetchone()
-    conn.commit()
-    c.close()
-    if (v != None):
-        top = [v[0], v[1], v[2]]
-    else:
-        top = [0, 0, 0]
-    top = [2018, 96, 889]
-    return json.dumps(top)
-
-
-@app.route('/zhangdiefive', methods=['GET'])
-def zhangdiefive():
-    d = datetime.datetime.now().date()
-    c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
-    v = c.fetchone()
-    conn.commit()
-    c.close()
-    if (v != None):
-        top = [v[0], v[1], v[2]]
-    else:
-        top = [3, 20, 869, 1258, 69, 21];
-
-
-    top = [3, 20, 869, 1258, 69, 21];
-    return json.dumps(top)
-
-@app.route('/zhangdieten', methods=['GET'])
-def zhangdieten():
-    d = datetime.datetime.now().date()
-    c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
-    v = c.fetchone()
-    conn.commit()
-    c.close()
-    if (v != None):
-        top = [v[0], v[1], v[2]]
-    else:
-        top = [7, 2, 9, 24, 12, 21, 222, 125, 332, 543, 645, 222, 342, 122, 87, 67, 23, 12, 5, 32];
-
-    top = [7, 2, 9, 24, 12, 21, 222, 125, 332, 543, 645, 222, 342, 122, 87, 67, 23, 12, 5, 32];
-    return json.dumps(top)
-
-
 @app.route('/mon')
 def mon():
     return render_template('mon.html')
@@ -112,7 +61,34 @@ def monjson():
 
 @app.route('/monsplinejson')
 def monsplinejson():
-    return json.dumps([6,7,5,4,3,4,5,6,6,7,8,9,38,26,18,22,9,5])
+
+    format = "'%h:%i'"
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select distinct time_format(time,%s) as tt, chuban, yizi, zhangting, beiza from rtZhangtingShu where date = %s order by tt', [format, d])
+    v = c.fetchall()
+    conn.commit()
+    c.close()
+    print len(v)
+
+
+    if (v != None):
+        i = 0
+        chuban = []
+        yizi = []
+        zhangting = []
+        beiza = []
+        for row in v:
+            chuban.append(row[1])
+            yizi.append(row[2])
+            zhangting.append(row[3])
+            beiza.append(row[4])
+            i = i + 1
+        return json.dumps([chuban,yizi,zhangting,beiza])
+    else:
+        return json.dumps([[0],[0],[0],[0]])
+
+    #return json.dumps([6,7,5,4,3,4,5,6,6,7,8,9,38,26,18,22,9,5])
 
 
 
