@@ -30,6 +30,9 @@ t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
 
+t1455 = datetime.time(hour=14, minute=55, second=0)
+t1459 = datetime.time(hour=14, minute=59, second=0)
+
 #dfChubanTime = pd.DataFrame(columns=['date', 'code', 'name', 'cbTime', 'isBeiza'])
 
 
@@ -104,14 +107,12 @@ while True:
         zdy8 = len(dff[dff['zf'] > 8])
         zdy9 = len(dff[dff['zf'] > 9])
 
-        tt = datetime.datetime.now().time().strftime('%H:%M')
-
         if not conn:
             conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab',
                                    charset='utf8')
         sql = "insert into rtZhangDieFu(date, time, fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9) values (%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s)"
         c = conn.cursor()
-        c.execute(sql, (d, tt, fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9))
+        c.execute(sql, (d, t, fxy9,fxy8,fxy7,fxy6,fxy5,fxy4,fxy3,fxy2,fxy1,fxy0,fz00,zdy0,zdy1,zdy2,zdy3,zdy4,zdy5,zdy6,zdy7,zdy8,zdy9))
         conn.commit()
         c.close()
         
@@ -128,11 +129,16 @@ while True:
         zhangting = len(dfZhangting)
         beiza = len(dfBeiza)
 
-        sql = "insert into rtZhangtingShu(date, time, chuban, yizi, zhangting, beiza ) values (%s, %s, %s, %s, %s, %s)"
-        c = conn.cursor()
-        c.execute(sql, (d, t,  chuban, yizi, zhangting, beiza))
-        conn.commit()
-        c.close()
+
+        if t > t1455 or t < t1459:
+            pass
+        else:
+            sql = "insert into rtZhangtingShu(date, time, chuban, yizi, zhangting, beiza ) values (%s, %s, %s, %s, %s, %s)"
+            c = conn.cursor()
+            tt = datetime.datetime.now().time().strftime('%H:%M')
+            c.execute(sql, (d, tt,  chuban, yizi, zhangting, beiza))
+            conn.commit()
+            c.close()
 
 '''
 
