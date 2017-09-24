@@ -1,26 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Stock Market Status Monitor</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+{% extends "base.html" %}}
 
+{% block title %} new from base {% endblock %}}
+
+{% block head %}
+
+{{super()}}
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/mon.js')}}"></script>
-</head>
+
+{% endblock %}}
 
 
-<body>
+{% block content %}
+
 <div id="piechart"></div>
-</body>
-
-<body>
-<div id = "columnchart"> </div>
-</body>
-
-
-<body>
+<div id="columnchart"></div>
 <div id="splinechart"></div>
-</body>
 
-</html>
+{% endblock %}}
+
+
+
+
+

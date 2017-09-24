@@ -174,8 +174,8 @@ $(document).ready(function () {
     });
 
     getPieData();
-    getColumnData();
-    getSplineData();
+//    getColumnData();
+//    getSplineData();
 });
 
 
@@ -221,7 +221,7 @@ function getSplineData() {
 
 function st() {
     setInterval("getPieData()", 5000);
-    setInterval("getColumnData()", 5000);
-    setInterval("getSplineData()", 5000);
+  //  setInterval("getColumnData()", 5000);
+ //   setInterval("getSplineData()", 5000);
 
 }

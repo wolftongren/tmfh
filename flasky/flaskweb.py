@@ -40,7 +40,6 @@ def zhangdiepfu():
 
     return json.dumps(top)
 
-
 @app.route('/mon')
 def mon():
     return render_template('mon.html')
@@ -56,7 +55,7 @@ def monjson():
     if (v != None):
         return json.dumps([['zhang', v[0]], ['die', v[1]], ['ping', v[2]]])
     else:
-        return json.dumps([['zhang', 1], ['die', 1], ['ping', 1]])
+        return json.dumps([['zhang', 8], ['die', 1], ['ping', 14]])
 
 
 @app.route('/monsplinejson')
