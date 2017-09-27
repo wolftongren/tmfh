@@ -137,14 +137,14 @@ $(document).ready(function () {
 
     splinechart = new Highcharts.Chart({
         chart: {
-            renderTo: 'splinechart2',
+            renderTo: 'splinechartAvgzf',
             type: 'spline',
             events: {
                 load: st
             }
         },
         title: {
-            text: 'Zhangting Related Trends'
+            text: 'Average Zhangfu'
         },
         credits: {
             enabled: false
@@ -156,7 +156,6 @@ $(document).ready(function () {
         },
         xAxis: {
             type: 'linear',
-            //categories: ['9:30', '9:31', '9:32','9:33','9:34','9:35','9:36','9:37','9:38','9:39'],
             labels: {
                 step: 12
             }
@@ -175,17 +174,17 @@ $(document).ready(function () {
             }
         },
         series: [{
-            name: 'chuban',
+            name: 'avgzf',
             color: 'black'
         },{
-            name: 'yizi',
+            name: '000',
             color: 'blue'
         },{
-            name: 'zhangting',
-            color: 'red'
+            name: '300',
+            color: 'purple'
         },{
-            name: 'beiza',
-            color: 'green'
+            name: '600',
+            color: 'orange'
          }]
     });
 
@@ -247,14 +246,14 @@ function getZdfData() {
 function getSplineData() {
     $.ajax({
         type: "get",
-        url: "/zhangtingsplinejson",
+        url: "/avgzhangfujson",
         dataType: "json",
         success: function (datax) {
             console.log(datax)
-            //splinechart.series[0].setData(datax[0]);
-            splinechart.series[1].setData(datax[0]);
-            splinechart.series[2].setData(datax[1]);
-            splinechart.series[3].setData(datax[2]);
+            splinechart.series[0].setData(datax[0]);
+            splinechart.series[1].setData(datax[1]);
+            splinechart.series[2].setData(datax[2]);
+            splinechart.series[3].setData(datax[3]);
 
         }
     });

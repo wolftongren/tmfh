@@ -52,30 +52,31 @@ def zhangdiepfu():
 
 
 
-'''
-def monsplinejson():
+
+@app.route('/avgzhangfujson', methods=['GET'])
+def avgzhangfu():
     d = datetime.datetime.now().date()
     c = conn.cursor()
-    c.execute('select distinct time, chuban, yizi, zhangting, beiza from rtZhangtingShu where date = %s order by time', d)
+    c.execute('select distinct time, avgzf, avg000zf, avg300zf, avg600zf from rtAvgZhangfu where date = %s order by time', d)
     v = c.fetchall()
     conn.commit()
     c.close()
 
     if (v != None):
-        chuban = []
-        yizi = []
-        zhangting = []
-        beiza = []
+        avgzf = []
+        avg000zf = []
+        avg300zf = []
+        avg600zf = []
         for row in v:
-            chuban.append(row[1])
-            yizi.append(row[2])
-            zhangting.append(row[3])
-            beiza.append(row[4])
+            avgzf.append(row[1])
+            avg000zf.append(row[2])
+            avg300zf.append(row[3])
+            avg600zf.append(row[4])
         print v
-        return json.dumps([chuban,yizi,zhangting,beiza])
+        return json.dumps([avgzf,avg000zf,avg300zf,avg600zf])
     else:
         return json.dumps([[0],[0],[0],[0]])
-'''
+
 
 @app.route('/zhangtingsplinejson')
 def monsplinejson():
