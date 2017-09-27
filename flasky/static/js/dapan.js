@@ -200,7 +200,7 @@ function getZdfData() {
 
     $.ajax({
         type: "get",
-        url: "/zhangdiefu",
+        url: "/zhangdiefujson",
         dataType: "json",
         success: function (datax) {
             dataZdp = [0,0,0];
@@ -247,14 +247,14 @@ function getZdfData() {
 function getSplineData() {
     $.ajax({
         type: "get",
-        url: "/monsplinejson",
+        url: "/zhangtingsplinejson",
         dataType: "json",
         success: function (datax) {
             console.log(datax)
             //splinechart.series[0].setData(datax[0]);
-            splinechart.series[1].setData(datax[1]);
-            splinechart.series[2].setData(datax[2]);
-            splinechart.series[3].setData(datax[3]);
+            splinechart.series[1].setData(datax[0]);
+            splinechart.series[2].setData(datax[1]);
+            splinechart.series[3].setData(datax[2]);
 
         }
     });
@@ -263,5 +263,4 @@ function getSplineData() {
 function st() {
      setInterval("getZdfData()", 5000);
      setInterval("getSplineData()", 5000);
-
 }

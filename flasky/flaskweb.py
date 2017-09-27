@@ -23,9 +23,18 @@ def dapan():
 def zhangting():
     return render_template('zhangting.html')
 
+@app.route('/daban')
+def daban():
+    return render_template('daban.html')
+
+@app.route('/mon')
+def mon():
+    return render_template('mon.html')
 
 
-@app.route('/zhangdiefu', methods=['GET'])
+
+
+@app.route('/zhangdiefujson', methods=['GET'])
 def zhangdiepfu():
     d = datetime.datetime.now().date()
     c = conn.cursor()
@@ -40,27 +49,11 @@ def zhangdiepfu():
 
     return json.dumps(top)
 
-@app.route('/mon')
-def mon():
-    return render_template('mon.html')
-
-@app.route('/monjson')
-def monjson():
-    d = datetime.datetime.now().date()
-    c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
-    v = c.fetchone()
-    conn.commit()
-    c.close()
-    if (v != None):
-        return json.dumps([['zhang', v[0]], ['die', v[1]], ['ping', v[2]]])
-    else:
-        return json.dumps([['zhang', 8], ['die', 1], ['ping', 14]])
 
 
-@app.route('/monsplinejson')
+
+'''
 def monsplinejson():
-
     d = datetime.datetime.now().date()
     c = conn.cursor()
     c.execute('select distinct time, chuban, yizi, zhangting, beiza from rtZhangtingShu where date = %s order by time', d)
@@ -82,11 +75,40 @@ def monsplinejson():
         return json.dumps([chuban,yizi,zhangting,beiza])
     else:
         return json.dumps([[0],[0],[0],[0]])
+'''
 
-    #return json.dumps([6,7,5,4,3,4,5,6,6,7,8,9,38,26,18,22,9,5])
+@app.route('/zhangtingsplinejson')
+def monsplinejson():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select distinct time, yizi from rtZhangtingShu where date = %s order by time', d)
+    v1 = c.fetchall()
+    c.execute('select distinct time, zhangting from rtZhangtingShu where date = %s order by time', d)
+    v2 = c.fetchall()
+    c.execute('select distinct time, beiza from rtZhangtingShu where date = %s order by time', d)
+    v3 = c.fetchall()
+    conn.commit()
+    c.close()
+
+    if (v1 != None):
+        return json.dumps([v1,v2,v3])
+    else:
+        return json.dumps([[0],[0],[0],[0]])
 
 
 
+@app.route('/monjson')
+def monjson():
+    d = datetime.datetime.now().date()
+    c = conn.cursor()
+    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
+    v = c.fetchone()
+    conn.commit()
+    c.close()
+    if (v != None):
+        return json.dumps([['zhang', v[0]], ['die', v[1]], ['ping', v[2]]])
+    else:
+        return json.dumps([['zhang', 8], ['die', 1], ['ping', 14]])
 
 
 
