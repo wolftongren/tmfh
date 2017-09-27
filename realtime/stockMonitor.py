@@ -48,7 +48,7 @@ while True:
         print "stock is over, exit..."
         break
 
-    if (t > t930 and t < t1130) or (t > t1300 and t < t1500):
+    if (t < t930 and t < t1130) or (t > t1300 and t < t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -60,7 +60,7 @@ while True:
                 dfResult = dfResult.append(df)
 
         dff = dfResult.copy()
-        
+
         dff = dff[dff['volume']>'0']
 
 
@@ -82,8 +82,36 @@ while True:
         dff['zhangfu'] =  dff['price'] / dff['pre_close']
         dff['chuban'] = dff['high'] / dff['pre_close']
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
+
+
+
+        dff000 = dff[dff['code']< '300000']
+        print len(dff000)
+        dfftmp = dff[dff['code'] > '300000']
+        dff300 = dfftmp[dfftmp['code'] < '600000']
+        print len(dff300)
+        dff600 = dff[dff['code'] >= '600000' ]
+        print len(dff600)
+
+        avgzf = round(dff['zf'].sum() / len(dff), 2)
+        print avgzf
+        avg000zf = round(dff000['zf'].sum() / len(dff000), 2)
+        print avg000zf
+        avg300zf = round(dff300['zf'].sum() / len(dff300), 2)
+        print avg300zf
+        avg600zf = round(dff600['zf'].sum() / len(dff600), 2)
+        print avg600zf
+
+        sql = "insert into rtAvgZhangfu(date, time, avgzf, avg000zf, avg300zf, avg600zf ) values (%s, %s, %s, %s, %s, %s)"
+        c = conn.cursor()
+        tt = datetime.datetime.now().time().strftime('%H:%M')
+        c.execute(sql, (d, tt, avgzf, avg000zf, avg300zf, avg600zf))
+        conn.commit()
+        c.close()
+
+
         
-####################zhang die fu 1%######################
+        ####################zhang die fu 1%######################
         
         fxy9 = len(dff[dff['zf'] < -9])
         fxy8 = len(dff[dff['zf'] < -8])
@@ -140,7 +168,7 @@ while True:
             conn.commit()
             c.close()
 
-'''
+        '''
 
 ##########################Zhang Die Ping##############################
         shangzhang = len(dff[dff['zhangfu'] > 1])
