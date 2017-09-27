@@ -11,18 +11,14 @@ conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr'
 
 
 @app.route('/')
-def hello():
-    d = datetime.datetime.now().date()
-    c = conn.cursor()
-    c.execute('select shangzhang, xiadie, pingpan from rtZhangDiePing where date = %s order by time desc limit 1', d)
-    v = c.fetchone()
-    conn.commit()
-    c.close()
-    if (v != None):
-        ones = [v[0], v[1], v[2]]
-    else:
-        ones = [0, 0, 0]
-    return render_template('main.html', data=json.dumps(ones))
+def root():
+    return render_template('dapan.html')
+
+
+@app.route('/zhangting')
+def zhangting():
+    return render_template('zhangting.html')
+
 
 
 @app.route('/zhangdiefu', methods=['GET'])
@@ -87,9 +83,7 @@ def monsplinejson():
 
 
 
-@app.route('/zhangting')
-def zhangting():
-    return render_template('zhangting.html')
+
 
 
 @app.route('/dabantishijson', methods=['GET'])

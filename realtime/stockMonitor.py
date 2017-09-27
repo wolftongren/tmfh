@@ -130,7 +130,7 @@ while True:
         beiza = len(dfBeiza)
 
 
-        if t > t1455 or t < t1459:
+        if t > t1455 and t < t1459:
             pass
         else:
             sql = "insert into rtZhangtingShu(date, time, chuban, yizi, zhangting, beiza ) values (%s, %s, %s, %s, %s, %s)"
