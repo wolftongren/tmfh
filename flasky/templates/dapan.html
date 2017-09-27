@@ -1,74 +1,44 @@
-<!doctype html>
-<html lang="en">
-  <head>
-	<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dashboard to Stock Monitor</title>
-	<!-- Bootstrap core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename = 'css/dashboard.css')}}" rel="stylesheet">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>  
+{% extends "base.html" %}}
+
+{% block title %} dapan status {% endblock %}}
+
+{% block head %}
+
+{{super()}}
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/dapan.js')}}"></script>
 
-  </head>
+{% endblock %}}
 
-  <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">StockLab</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/">Realtime</a></li>
-            <li><a href="zhangting">Zhangting</a></li>
-            <li><a href="#">History</a></li>
-            <li><a href="#">Quantumn</a></li>
-            <li><a href="#">Misc</a></li>
-          </ul>
-       </div>
-      </div>
-	</nav>
 
-	<div class="container-fluid">
-      <div class="row">
-		<div class="main">
-		 <div class="row placeholders">
-            <div class="col-xs-6 col-sm-2 placeholder">
-              <div id = "zdpcolchart"> </div>
-			</div>
-            <div class="col-xs-6 col-sm-7 placeholder">
-              <div id = "tencolchart"> </div>
-			</div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <div id = "fivecolchart"> </div>
-			</div>
-		 </div>
-      </div>
-    </div>
+{% block content %}
 
-        <div class = "row">
-            <div class = "main">
-                <div class="row placeholders">
-                 <div class="col-xs-6 col-sm-6 placeholder">
-                    <div id = "splinechart2"> </div>
-                 </div>
-			</div>
-             </div>
-		</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main">
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-2 placeholder">
+                    <div id="zdpcolchart"></div>
+                </div>
+                <div class="col-xs-6 col-sm-7 placeholder">
+                    <div id="tencolchart"></div>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <div id="fivecolchart"></div>
+                </div>
             </div>
         </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </body>
-</html>
+    </div>
 
+    <div class="row">
+        <div class="main">
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-6 placeholder">
+                    <div id="splinechart2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}}
 

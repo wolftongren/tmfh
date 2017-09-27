@@ -14,6 +14,10 @@ conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr'
 def root():
     return render_template('dapan.html')
 
+@app.route('/dapan')
+def dapan():
+    return render_template('dapan.html')
+
 
 @app.route('/zhangting')
 def zhangting():
