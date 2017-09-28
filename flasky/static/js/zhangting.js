@@ -137,13 +137,89 @@ function setZhengchangTable() {
 }
 
 $(document).ready(function () {
-    setDabanTable();
+
+    splinechart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'splinechartzhangting',
+            type: 'spline',
+            events: {
+                load: st
+            }
+        },
+        title: {
+            text: 'Zhangting Related Trends'
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'num'
+            }
+        },
+        xAxis: {
+            type: 'linear',
+            //categories: ['9:30', '9:31', '9:32','9:33','9:34','9:35','9:36','9:37','9:38','9:39'],
+            labels: {
+                step: 12
+            }
+        },
+        plotOptions: {
+            spline: {
+                linewidth: 4,
+                states: {
+                    hover: {
+                        linewidth: 5
+                    }
+                },
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        series: [
+            {
+                name: 'yizi',
+                color: 'blue'
+            }, {
+                name: 'zhangting',
+                color: 'red'
+            }, {
+                name: 'beiza',
+                color: 'green'
+            }]
+    });
+
+
+    //setDabanTable();
+    //setInterval("setDabanTable()", 5000);
+
+    getSplineData();
+
     setBeizaTable();
     setYiziTable();
     setZhengchangTable();
-    setInterval("setYiziTable()", 30000);
-    setInterval("setBeizaTable()", 30000);
-    setInterval("setZhengchangTable()", 30000);
-    setInterval("setDabanTable()", 5000);
+    setInterval("setYiziTable()", 10000);
+    setInterval("setBeizaTable()", 10000);
+    setInterval("setZhengchangTable()", 10000);
 
 });
+
+function getSplineData() {
+    $.ajax({
+        type: "get",
+        url: "/zhangtingsplinejson",
+        dataType: "json",
+        success: function (datax) {
+            console.log(datax)
+            splinechart.series[0].setData(datax[0]);
+            splinechart.series[1].setData(datax[1]);
+            splinechart.series[2].setData(datax[2]);
+
+        }
+    });
+}
+
+function st() {
+    setInterval("getSplineData()", 50000);
+}

@@ -1,21 +1,23 @@
 <!doctype html>
 <html lang="en">
   <head>
+      {% block head %}
 	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dashboard to Stock Monitor</title>
+	<title>{% block title %}{% endblock %} Dashboard to Stock Monitor</title>
 	<!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename = 'css/dashboard.css')}}" rel="stylesheet">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>  
-    <script type="text/javascript" src="{{ url_for('static', filename = 'js/zhangdieping.js')}}"></script>
+    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/4.0.1/highcharts.js"></script>
 
+      {% endblock %}
   </head>
 
   <body>
+
 	<nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -25,47 +27,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">StockLab</a>
+          <a class="navbar-brand" href="/">StockLab</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Realtime</a></li>
-            <li><a href="zhangting">Zhangting</a></li>
-            <li><a href="#">History</a></li>
-            <li><a href="#">Quantumn</a></li>
-            <li><a href="#">Misc</a></li>
+            <li><a href="dapan">dapan</a></li>
+            <li><a href="zhangting">zhangting</a></li>
+            <li><a href="history">History</a></li>
+            <li><a href="daban">Daban</a></li>
+            <li><a href="fupan">Fupan</a></li>
+            <li><a href="lianghua">Lianghua</a></li>
+            <li><a href="chaxun">Chaxun</a></li>
+            <li><a href="misc">Misc</a></li>
           </ul>
        </div>
       </div>
 	</nav>
 
-	<div class="container-fluid">
-      <div class="row">
+    {% block content%}{% endblock %}
 
 
-		<div class="main">
-		 <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <h4>ZhangDie</h4>
-              <div id = "columnchart"> </div>
-			</div>
-            <div class="col-xs-6 col-sm-5 placeholder">
-              <h4>Distribution</h4>
-              <div id = "barchart"> </div>
-			</div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-              <h4>SPline</h4>
-              <div id = "splinechart"> </div>
-			</div>
-		 </div>	
-
-
-
-
-
-		</div>
-      </div>
-    </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
 </html>
