@@ -259,7 +259,28 @@ function getSplineData() {
     });
 }
 
+function setAvgZhangfuTable() {
+ //   $('#avgZhangfuTable').bootstrapTable('destroy');
+    $('#avgZhangfuTable').bootstrapTable({
+        url: '/avgzhangfutablejson',
+        columns: [{
+            field: 'id',
+            title: 'id'
+        },{
+            field: 'name',
+            title: 'name'
+        }, {
+            field: 'zhangfu',
+            title: 'avgzhangfu'
+        }
+        ]
+    });
+}
+
+
 function st() {
      setInterval("getZdfData()", 5000);
      setInterval("getSplineData()", 5000);
+     setInterval("setAvgZhangfuTable()", 5000);
+
 }

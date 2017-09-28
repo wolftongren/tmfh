@@ -5,7 +5,14 @@
 {% block head %}
 
 {{super()}}
-    <script type="text/javascript" src="{{ url_for('static', filename = 'js/dapan.js')}}"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/dapan.js')}}"></script>
 
 {% endblock %}}
 
@@ -32,9 +39,16 @@
     <div class="row">
         <div class="main">
             <div class="row placeholders">
-                <div class="col-xs-6 col-sm-12 placeholder">
+                <div class="col-xs-6 col-sm-9 placeholder">
                     <div id="splinechartAvgzf"></div>
                 </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h3>AVG Zhangfu</h3>
+                    <div class="table-responsive">
+                        <table id="avgZhangfuTable">
+        </table>
+    </div>
+</div>
             </div>
         </div>
     </div>

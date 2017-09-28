@@ -25,7 +25,7 @@ print len(dfChubanTime)
 
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
-t930 = datetime.time(hour=9, minute=25, second=0)
+t925 = datetime.time(hour=9, minute=25, second=0)
 t1130 = datetime.time(hour=11, minute=30, second=10)
 t1300 = datetime.time(hour=13, minute=0, second=0)
 t1500 = datetime.time(hour=15, minute=0, second=10)
@@ -48,7 +48,7 @@ while True:
         print "stock is over, exit..."
         break
 
-    if (t < t930 and t < t1130) or (t > t1300 and t < t1500):
+    if (t > t925 and t < t1130) or (t > t1300 and t < t1500):
 
         print "fetching data...", datetime.datetime.now()
         dfResult = pd.DataFrame()
@@ -84,6 +84,7 @@ while True:
         dff['zf'] = (dff['price'] / dff['pre_close'] - 1) * 100
 
 
+################### average zhangfu for all, 000, 300, 600 #############
 
         dff000 = dff[dff['code']< '300000']
         print len(dff000)
@@ -102,6 +103,9 @@ while True:
         avg600zf = round(dff600['zf'].sum() / len(dff600), 2)
         print avg600zf
 
+        if not conn:
+            conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab',
+                                   charset='utf8')
         sql = "insert into rtAvgZhangfu(date, time, avgzf, avg000zf, avg300zf, avg600zf ) values (%s, %s, %s, %s, %s, %s)"
         c = conn.cursor()
         tt = datetime.datetime.now().time().strftime('%H:%M')
