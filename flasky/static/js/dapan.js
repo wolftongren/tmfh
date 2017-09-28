@@ -260,7 +260,7 @@ function getSplineData() {
 }
 
 function setAvgZhangfuTable() {
- //   $('#avgZhangfuTable').bootstrapTable('destroy');
+    $('#avgZhangfuTable').bootstrapTable('destroy');
     $('#avgZhangfuTable').bootstrapTable({
         url: '/avgzhangfutablejson',
         columns: [{
@@ -279,8 +279,8 @@ function setAvgZhangfuTable() {
 
 
 function st() {
-     setInterval("getZdfData()", 5000);
-     setInterval("getSplineData()", 5000);
-     setInterval("setAvgZhangfuTable()", 5000);
+     setInterval("getZdfData()", 10000);
+     setInterval("getSplineData()", 10000);
+     setInterval("setAvgZhangfuTable()", 10000);
 
 }
