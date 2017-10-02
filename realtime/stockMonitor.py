@@ -21,7 +21,6 @@ dfZhangtingHistory2017 = pd.read_sql(sql, conn)
 d = datetime.datetime.now().date()
 sql = "select * from `rtChubanTime` where date = '%s'" % d
 dfChubanTime = pd.read_sql(sql, conn)
-print len(dfChubanTime)
 
 engine = create_engine('mysql+pymysql://root:lovetr@127.0.0.1/stocklab?charset=utf8')
 
@@ -87,21 +86,14 @@ while True:
 ################### average zhangfu for all, 000, 300, 600 #############
 
         dff000 = dff[dff['code']< '300000']
-        print len(dff000)
         dfftmp = dff[dff['code'] > '300000']
         dff300 = dfftmp[dfftmp['code'] < '600000']
-        print len(dff300)
         dff600 = dff[dff['code'] >= '600000' ]
-        print len(dff600)
 
         avgzf = round(dff['zf'].sum() / len(dff), 2)
-        print avgzf
         avg000zf = round(dff000['zf'].sum() / len(dff000), 2)
-        print avg000zf
         avg300zf = round(dff300['zf'].sum() / len(dff300), 2)
-        print avg300zf
         avg600zf = round(dff600['zf'].sum() / len(dff600), 2)
-        print avg600zf
 
         if not conn:
             conn = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='lovetr', db='stocklab',
@@ -185,7 +177,7 @@ while True:
         c.execute(sql, (d, t, shangzhang, xiadie, pingpan))
         conn.commit()
         c.close()
-
+'''
 
 ##########################Daban Tishi##############################
         dfMonitor = dff[dff['zhangfu'] > 1.080]
@@ -235,7 +227,6 @@ while True:
 ###################Zhangting Chuban --- Yizi, BeiZa, ZhengChang#######################
 
         dffchuban = dff[dff['chuban']>1.099]
-        print "jinri  chuban: ", len(dffchuban)
         dffchuban.to_sql('rtChuBan', engine, index=False, if_exists='replace')
 
 ################### chubanTime, isBeiza ##########################
@@ -292,7 +283,7 @@ while True:
             c.execute(sql, code)
         conn.commit()
         c.close()
-'''
+
 
 
 

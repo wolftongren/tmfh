@@ -263,4 +263,4 @@ def zhengchangjson():
         return json.dumps(jsonData)
 
 
-app.run(host='0.0.0.0', port=9999, debug=True)
+app.run(host='0.0.0.0', port=8888, debug=True)
